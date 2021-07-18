@@ -1,0 +1,3 @@
+rootProject.name = "RequestRepository"
+include ':app'
+include ':repository_lib'
