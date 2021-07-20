@@ -1,5 +1,7 @@
 package org.sheedon.repository;
 
+import org.sheedon.repository.strategy.StrategyConfig;
+
 /**
  * 默认本地请求策略
  *
@@ -19,6 +21,11 @@ public abstract class AbstractLocalRequestStrategy<RequestCard, ResponseModel>
      */
     @Override
     public int onRequestType() {
-        return DefaultStrategyHandler.REQUEST.TYPE_LOCAL_REQUEST;
+        return StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST;
+    }
+
+    @Override
+    protected int onProgressType() {
+        return StrategyConfig.PROGRESS.REQUEST_LOCAL;
     }
 }

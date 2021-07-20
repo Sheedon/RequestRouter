@@ -4,6 +4,8 @@ import android.util.SparseArray;
 
 import androidx.annotation.Nullable;
 
+import org.sheedon.repository.strategy.StrategyConfig;
+
 /**
  * 基础请求策略实现工厂
  *
@@ -28,9 +30,9 @@ public class BaseRequestStrategyFactory<RequestCard, ResponseModel>
         if (requestStrategies == null) {
             requestStrategies = new SparseArray<>();
 
-            requestStrategies.put(DefaultStrategyHandler.REQUEST.TYPE_LOCAL_REQUEST,
+            requestStrategies.put(StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST,
                     onCreateRealLocalRequestStrategy(callback));
-            requestStrategies.put(DefaultStrategyHandler.REQUEST.TYPE_NETWORK_REQUEST,
+            requestStrategies.put(StrategyConfig.REQUEST.TYPE_NETWORK_REQUEST,
                     onCreateRealNetworkRequestStrategy(callback));
         }
         return requestStrategies;
@@ -39,13 +41,13 @@ public class BaseRequestStrategyFactory<RequestCard, ResponseModel>
     /**
      * 加载请求策略类型
      * 由实际创建的请求策略提供策略类型
-     * 例如 {@link DefaultStrategyHandler.STRATEGY}
+     * 例如 {@link com.landeng.data_repository_lib.DefaultStrategyHandler.STRATEGY}
      *
      * @return 策略类型
      */
     @Override
     public int onLoadRequestStrategyType() {
-        return DefaultStrategyHandler.STRATEGY.TYPE_ONLY_NETWORK;
+        return StrategyConfig.STRATEGY.TYPE_ONLY_NETWORK;
     }
 
 
@@ -77,8 +79,8 @@ public class BaseRequestStrategyFactory<RequestCard, ResponseModel>
     @Override
     public void onDestroy() {
         if (requestStrategies != null) {
-            destroyByKey(DefaultStrategyHandler.REQUEST.TYPE_NETWORK_REQUEST);
-            destroyByKey(DefaultStrategyHandler.REQUEST.TYPE_LOCAL_REQUEST);
+            destroyByKey(StrategyConfig.REQUEST.TYPE_NETWORK_REQUEST);
+            destroyByKey(StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST);
             requestStrategies.clear();
         }
         requestStrategies = null;

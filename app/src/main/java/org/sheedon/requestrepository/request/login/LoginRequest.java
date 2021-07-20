@@ -5,6 +5,7 @@ import org.sheedon.repository.DefaultStrategyHandler;
 import org.sheedon.repository.Request;
 import org.sheedon.repository.StrategyHandle;
 import org.sheedon.repository.data.DataSource;
+import org.sheedon.repository.strategy.StrategyConfig;
 import org.sheedon.requestrepository.data.card.LoginCard;
 import org.sheedon.requestrepository.data.model.LoginModel;
 import org.sheedon.requestrepository.request.BaseRequest;
@@ -73,7 +74,7 @@ public class LoginRequest extends BaseRequest<LoginCard, LoginModel> {
              */
             @Override
             public int onLoadRequestStrategyType() {
-                return DefaultStrategyHandler.STRATEGY.TYPE_NOT_DATA_TO_LOCATION;
+                return StrategyConfig.STRATEGY.TYPE_NOT_DATA_TO_LOCATION;
             }
         };
     }

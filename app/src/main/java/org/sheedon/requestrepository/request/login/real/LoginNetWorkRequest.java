@@ -34,7 +34,7 @@ public class LoginNetWorkRequest extends AbstractNetRequestStrategy<LoginCard, L
      * 加载登陆method
      */
     @Override
-    protected Observable<RspModel<LoginModel>> onLoadApiMethod() {
+    protected Observable<RspModel<LoginModel>> onLoadMethod(LoginCard loginCard) {
         return Observable.create(emitter -> {
             TimeUnit.SECONDS.sleep(1);
             if (new Random().nextInt(10)>5) {

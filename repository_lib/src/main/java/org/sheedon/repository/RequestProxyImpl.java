@@ -17,7 +17,7 @@ public interface RequestProxyImpl {
      *
      * @return StrategyHandle
      */
-    StrategyHandle bindStrategyHandler();
+    StrategyHandle.Responsibilities bindStrategyHandler();
 
     /**
      * 代理请求入口

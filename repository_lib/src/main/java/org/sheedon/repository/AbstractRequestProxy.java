@@ -5,6 +5,7 @@ import android.util.SparseArray;
 import androidx.annotation.NonNull;
 
 import org.sheedon.repository.data.DataSource;
+import org.sheedon.repository.strategy.StrategyConfig;
 
 /**
  * 抽象请求代理类,数据请求统一通过该类代为执行，请求模块解耦，
@@ -23,7 +24,7 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
     // 反馈监听器
     private DataSource.Callback<ResponseModel> callback;
     // 当前进度
-    private int progress = DefaultStrategyHandler.PROGRESS.START;
+    private int progress = StrategyConfig.PROGRESS.START;
 
     public AbstractRequestProxy(@NonNull Request.Factory<RequestCard, ResponseModel> request,
                                 DataSource.Callback<ResponseModel> callback) {
@@ -35,7 +36,7 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
      * 绑定策略执行者
      */
     @Override
-    public StrategyHandle bindStrategyHandler() {
+    public StrategyHandle.Responsibilities bindStrategyHandler() {
         return DefaultStrategyHandler.HANDLER;
     }
 
@@ -46,7 +47,7 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
      * 1. 加载已绑定的策略执行器，并核实判空处理
      * 2. 重置更新进度为初次请求状态
      * 3. 加载请求策略集合
-     * 4. 加载请求策略类型 {@link DefaultStrategyHandler.STRATEGY}
+     * 4. 加载请求策略类型 {@link com.landeng.data_repository_lib.DefaultStrategyHandler.STRATEGY}
      * 5. 加载请求参数卡片
      * <p>
      * 请求
@@ -54,15 +55,15 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
      */
     @Override
     public void request() {
-        this.progress = DefaultStrategyHandler.PROGRESS.START;
+        this.progress = StrategyConfig.PROGRESS.START;
         requestDispatch();
     }
 
     /**
      * 请求调度
      */
-    private void requestDispatch(){
-        StrategyHandle handler = bindStrategyHandler();
+    private void requestDispatch() {
+        StrategyHandle.Responsibilities handler = bindStrategyHandler();
 
         if (handler == null) {
             throw new NullPointerException("handler is null");
@@ -133,7 +134,7 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
 
 
             // 加载策略执行者，无执行者，则直接反馈给callback，否则提交给执行器去执行
-            StrategyHandle handler = bindStrategyHandler();
+            StrategyHandle.Responsibilities handler = bindStrategyHandler();
             if (handler != null) {
 
                 // 加载请求策略类型
@@ -141,15 +142,18 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
 
 
                 // 执行反馈处理
-                AbstractRequestProxy.this.progress = handler.handleCallbackStrategy(type,
+                boolean handleSuccess = handler.handleCallbackStrategy(type,
                         AbstractRequestProxy.this.progress, progress,
-                        callback, responseModel, message, isSuccess);
+                        callback, responseModel, message, isSuccess, progressCallback);
 
-                if(AbstractRequestProxy.this.progress != DefaultStrategyHandler.PROGRESS.COMPLETE){
-                    requestDispatch();
+                if (AbstractRequestProxy.this.progress == StrategyConfig.PROGRESS.COMPLETE) {
+                    return;
                 }
 
-                return;
+                if (handleSuccess) {
+                    requestDispatch();
+                    return;
+                }
             }
 
             // 无执行器执行
