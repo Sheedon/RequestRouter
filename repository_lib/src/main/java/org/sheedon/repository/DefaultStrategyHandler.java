@@ -1,11 +1,10 @@
 package org.sheedon.repository;
 
-
-import android.util.SparseArray;
-
 import org.sheedon.repository.data.DataSource;
 import org.sheedon.repository.strategy.StrategyConfig;
 import org.sheedon.repository.strategy.StrategyHandlerFactory;
+
+import java.util.Queue;
 
 /**
  * 默认策略执行者
@@ -27,6 +26,18 @@ public final class DefaultStrategyHandler implements StrategyHandle.Responsibili
         handlerFactory = new StrategyHandlerFactory();
     }
 
+    @SafeVarargs
+    @Override
+    public final <RequestCard> Queue<Request<RequestCard>> loadRequestQueue(int strategyType,
+                                                                            Request<RequestCard>... requests) {
+        if (requests == null || requests.length == 0)
+            return null;
+
+        StrategyHandle handler = handlerFactory.loadStrategyHandler(strategyType);
+
+        return handler.loadRequestQueue(requests);
+    }
+
     /**
      * 请求策略执行
      *
@@ -40,20 +51,15 @@ public final class DefaultStrategyHandler implements StrategyHandle.Responsibili
      */
     @Override
     public <RequestCard> boolean handleRequestStrategy(int requestStrategyType, int progress,
-                                                       SparseArray<Request<RequestCard>> requestStrategies,
-                                                       RequestCard card, StrategyHandle.ProgressCallback callback) {
-
-        if (callback == null) {
-            throw new NullPointerException("callback is null");
-        }
+                                                       Queue<Request<RequestCard>> requestStrategies,
+                                                       RequestCard card) {
 
         StrategyHandle handler = handlerFactory.loadStrategyHandler(requestStrategyType);
         if (handler == null) {
-            callback.onCurrentProgressCallback(StrategyConfig.PROGRESS.ERROR);
             return false;
         }
 
-        return handler.handleRequestStrategy(progress, requestStrategies, card, callback);
+        return handler.handleRequestStrategy(requestStrategies, card);
     }
 
     /**
@@ -70,28 +76,22 @@ public final class DefaultStrategyHandler implements StrategyHandle.Responsibili
      * @return 执行完成的进度
      */
     @Override
-    public <ResponseModel> boolean handleCallbackStrategy(int requestStrategyType, int currentProgress,
-                                                          int callbackProgress,
-                                                          DataSource.Callback<ResponseModel> callback,
-                                                          ResponseModel responseModel, String message,
-                                                          boolean isSuccess,
-                                                          StrategyHandle.ProgressCallback progressCallback) {
+    public <RequestCard, ResponseModel> int handleCallbackStrategy(int requestStrategyType,
+                                                                   Queue<Request<RequestCard>> requestStrategies,
+                                                                   DataSource.Callback<ResponseModel> callback,
+                                                                   ResponseModel responseModel, String message,
+                                                                   boolean isSuccess) {
 
         if (callback == null) {
             throw new NullPointerException("callback is null");
         }
 
-        if (progressCallback == null) {
-            throw new NullPointerException("progressCallback is null");
-        }
-
         StrategyHandle handler = handlerFactory.loadStrategyHandler(requestStrategyType);
         if (handler == null) {
-            progressCallback.onCurrentProgressCallback(StrategyConfig.PROGRESS.ERROR);
-            return false;
+            return StrategyConfig.PROGRESS.ERROR;
         }
 
-        return handler.handleCallbackStrategy(currentProgress, callbackProgress, callback, responseModel,
-                message, isSuccess, progressCallback);
+        return handler.handleCallbackStrategy(requestStrategies, callback, responseModel,
+                message, isSuccess);
     }
 }

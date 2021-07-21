@@ -1,11 +1,11 @@
 package org.sheedon.repository;
 
-import android.util.SparseArray;
-
 import androidx.annotation.NonNull;
 
 import org.sheedon.repository.data.DataSource;
 import org.sheedon.repository.strategy.StrategyConfig;
+
+import java.util.Queue;
 
 /**
  * 抽象请求代理类,数据请求统一通过该类代为执行，请求模块解耦，
@@ -69,20 +69,21 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
             throw new NullPointerException("handler is null");
         }
 
+        int strategyType = request.onLoadRequestStrategyType();
+
         // 依次获取本地请求策略，网络请求策略，请求类型，请求卡片
-        SparseArray<Request<RequestCard>> requestStrategies
-                = request.createRequestStrategies(strategyCallback);
+        Queue<Request<RequestCard>> requestStrategies
+                = request.createRequestStrategies(strategyCallback, handler, strategyType);
 
         if (requestStrategies == null || requestStrategies.size() == 0) {
             throw new RuntimeException("requestStrategies is null or empty!");
         }
 
-        int strategyType = request.onLoadRequestStrategyType();
         RequestCard requestCard = onCreateRequestCard();
 
         // 获取当前状态
         boolean isSuccess = handler.handleRequestStrategy(strategyType, this.progress,
-                requestStrategies, requestCard, progressCallback);
+                requestStrategies, requestCard);
 
         if (!isSuccess) {
             strategyCallback.onDataNotAvailable("request failure", this.progress);
@@ -107,7 +108,7 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
          */
         @Override
         public void onDataLoaded(ResponseModel responseModel, int progress) {
-            handle(responseModel, "", true, progress);
+            handle(responseModel, "", true);
         }
 
         /**
@@ -117,7 +118,7 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
          */
         @Override
         public void onDataNotAvailable(String message, int progress) {
-            handle(null, message, false, progress);
+            handle(null, message, false);
         }
 
         /**
@@ -125,10 +126,8 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
          * @param responseModel 反馈数据Model
          * @param message 描述信息
          * @param isSuccess 是否成功
-         * @param progress 反馈状态
          */
-        private void handle(ResponseModel responseModel, String message, boolean isSuccess,
-                            int progress) {
+        private void handle(ResponseModel responseModel, String message, boolean isSuccess) {
             if (callback == null)
                 return;
 
@@ -140,17 +139,22 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
                 // 加载请求策略类型
                 int type = request.onLoadRequestStrategyType();
 
+                Queue<Request<RequestCard>> requests = request.onGetRequestStrategies();
 
-                // 执行反馈处理
-                boolean handleSuccess = handler.handleCallbackStrategy(type,
-                        AbstractRequestProxy.this.progress, progress,
-                        callback, responseModel, message, isSuccess, progressCallback);
-
-                if (AbstractRequestProxy.this.progress == StrategyConfig.PROGRESS.COMPLETE) {
+                if (requests == null || requests.size() == 0) {
                     return;
                 }
 
-                if (handleSuccess) {
+                // 执行反馈处理
+                progress = handler.handleCallbackStrategy(type, requests,
+                        callback, responseModel,
+                        message, isSuccess);
+
+                if (progress == StrategyConfig.PROGRESS.COMPLETE) {
+                    return;
+                }
+
+                if (progress != StrategyConfig.PROGRESS.ERROR) {
                     requestDispatch();
                     return;
                 }
@@ -164,12 +168,6 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel> implement
             }
         }
     };
-
-    /**
-     * 进度反馈监听器
-     */
-    private final StrategyHandle.ProgressCallback progressCallback
-            = progress -> AbstractRequestProxy.this.progress = progress;
 
 
     /**

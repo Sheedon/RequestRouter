@@ -26,6 +26,6 @@ public abstract class AbstractLocalRequestStrategy<RequestCard, ResponseModel>
 
     @Override
     protected int onProgressType() {
-        return StrategyConfig.PROGRESS.REQUEST_LOCAL;
+        return StrategyConfig.PROGRESS.REQUEST_DOING;
     }
 }

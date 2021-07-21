@@ -1,10 +1,10 @@
 package org.sheedon.repository;
 
-import android.util.SparseArray;
-
 import androidx.annotation.Nullable;
 
 import org.sheedon.repository.strategy.StrategyConfig;
+
+import java.util.Queue;
 
 /**
  * 基础请求策略实现工厂
@@ -17,25 +17,30 @@ public class BaseRequestStrategyFactory<RequestCard, ResponseModel>
         extends Request.Factory<RequestCard, ResponseModel> {
 
     // 请求策略
-    private SparseArray<Request<RequestCard>> requestStrategies;
+    private Queue<Request<RequestCard>> requestStrategiesQueue;
 
 
     public BaseRequestStrategyFactory() {
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     @Override
-    public SparseArray<Request<RequestCard>> createRequestStrategies(
-            StrategyHandle.StrategyCallback<ResponseModel> callback) {
-        if (requestStrategies == null) {
-            requestStrategies = new SparseArray<>();
-
-            requestStrategies.put(StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST,
-                    onCreateRealLocalRequestStrategy(callback));
-            requestStrategies.put(StrategyConfig.REQUEST.TYPE_NETWORK_REQUEST,
+    public Queue<Request<RequestCard>> createRequestStrategies(
+            StrategyHandle.StrategyCallback<ResponseModel> callback,
+            StrategyHandle.Responsibilities handler, int strategyType) {
+        if (requestStrategiesQueue == null) {
+            requestStrategiesQueue = handler.loadRequestQueue(strategyType, onCreateRealLocalRequestStrategy(callback),
                     onCreateRealNetworkRequestStrategy(callback));
         }
-        return requestStrategies;
+        return requestStrategiesQueue;
+    }
+
+
+    @Nullable
+    @Override
+    public Queue<Request<RequestCard>> onGetRequestStrategies() {
+        return requestStrategiesQueue;
     }
 
     /**
@@ -78,24 +83,18 @@ public class BaseRequestStrategyFactory<RequestCard, ResponseModel>
      */
     @Override
     public void onDestroy() {
-        if (requestStrategies != null) {
-            destroyByKey(StrategyConfig.REQUEST.TYPE_NETWORK_REQUEST);
-            destroyByKey(StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST);
-            requestStrategies.clear();
-        }
-        requestStrategies = null;
-    }
+        if (requestStrategiesQueue == null)
+            return;
 
-    /**
-     * 根据key 销毁请求
-     *
-     * @param key 请求策略key
-     */
-    protected void destroyByKey(int key) {
-        Request<RequestCard> request = requestStrategies.get(key);
-        if (request != null) {
-            request.onDestroy();
-            requestStrategies.remove(key);
+        if (requestStrategiesQueue.size() == 0) {
+            requestStrategiesQueue = null;
+            return;
         }
+
+        Request<RequestCard> request;
+        while ((request = requestStrategiesQueue.poll()) != null) {
+            request.onDestroy();
+        }
+        requestStrategiesQueue = null;
     }
 }

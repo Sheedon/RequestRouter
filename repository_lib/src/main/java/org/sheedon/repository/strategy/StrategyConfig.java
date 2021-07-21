@@ -29,14 +29,12 @@ public interface StrategyConfig {
     interface PROGRESS {
         // 准备开始请求
         int START = 0x1;
-        // 本地请求中
-        int REQUEST_LOCAL = 0x2;
-        // 网络请求中
-        int REQUEST_NETWORK = 0x4;
+        // 请求中
+        int REQUEST_DOING = 0x2;
         // 请求完成
-        int COMPLETE = 0x8;
+        int COMPLETE = 0x4;
         // 请求流程等错误
-        int ERROR = 0x10;
+        int ERROR = 0x8;
     }
 
     /**

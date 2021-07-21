@@ -1,8 +1,8 @@
 package org.sheedon.repository;
 
-import android.util.SparseArray;
-
 import org.sheedon.repository.data.DataSource;
+
+import java.util.Queue;
 
 /**
  * 执行策略
@@ -14,6 +14,16 @@ import org.sheedon.repository.data.DataSource;
 public interface StrategyHandle {
 
     /**
+     * 加载请求项排序
+     *
+     * @param requests      请求项
+     * @param <RequestCard> RequestCard
+     * @return Queue<Request < RequestCard>>
+     */
+    @SuppressWarnings("unchecked")
+    <RequestCard> Queue<Request<RequestCard>> loadRequestQueue(Request<RequestCard>... requests);
+
+    /**
      * 请求策略执行
      *
      * @param progress          请求进度
@@ -23,9 +33,8 @@ public interface StrategyHandle {
      * @param <RequestCard>     RequestCard
      * @return 执行是否成功
      */
-    <RequestCard> boolean handleRequestStrategy(int progress,
-                                                SparseArray<Request<RequestCard>> requestStrategies,
-                                                RequestCard card, ProgressCallback callback);
+    <RequestCard> boolean handleRequestStrategy(Queue<Request<RequestCard>> requestStrategies,
+                                                RequestCard card);
 
     /**
      * 反馈策略待执行方法
@@ -39,13 +48,10 @@ public interface StrategyHandle {
      * @param <ResponseModel>  ResponseModel
      * @return 执行完成的进度
      */
-    <ResponseModel> boolean handleCallbackStrategy(int currentProgress,
-                                                   int callbackProgress,
-                                                   DataSource.Callback<ResponseModel> callback,
-                                                   ResponseModel model,
-                                                   String message,
-                                                   boolean isSuccess,
-                                                   ProgressCallback progressCallback);
+    <RequestCard, ResponseModel> int handleCallbackStrategy(Queue<Request<RequestCard>> requestStrategies,
+                                                            DataSource.Callback<ResponseModel> callback,
+                                                            ResponseModel responseModel, String message,
+                                                            boolean isSuccess);
 
 
     /**
@@ -61,17 +67,21 @@ public interface StrategyHandle {
      * 默认 组策略执行者 的职责
      */
     interface Responsibilities {
+
+        @SuppressWarnings("unchecked")
+        <RequestCard> Queue<Request<RequestCard>> loadRequestQueue(int strategyType, Request<RequestCard>... requests);
+
         // 执行请求策略
         <RequestCard> boolean handleRequestStrategy(int requestStrategyType, int progress,
-                                                    SparseArray<Request<RequestCard>> requestStrategies,
-                                                    RequestCard card, ProgressCallback callback);
+                                                    Queue<Request<RequestCard>> requestStrategies,
+                                                    RequestCard card);
 
         // 执行反馈处理策略
-        <ResponseModel> boolean handleCallbackStrategy(int requestStrategyType, int currentProgress,
-                                                       int callbackProgress,
-                                                       DataSource.Callback<ResponseModel> callback,
-                                                       ResponseModel responseModel, String message,
-                                                       boolean isSuccess, ProgressCallback progressCallback);
+        <RequestCard, ResponseModel> int handleCallbackStrategy(int requestStrategyType,
+                                                                Queue<Request<RequestCard>> requestStrategies,
+                                                                DataSource.Callback<ResponseModel> callback,
+                                                                ResponseModel responseModel, String message,
+                                                                boolean isSuccess);
     }
 
     /**

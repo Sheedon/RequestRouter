@@ -19,6 +19,7 @@ public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
 
     protected StrategyHandle.StrategyCallback<ResponseModel> callback;
     private Disposable disposable;
+    private boolean complete = false;
 
     public BaseRequestStrategy(StrategyHandle.StrategyCallback<ResponseModel> callback) {
         this.callback = callback;
@@ -39,26 +40,34 @@ public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(rspModel -> {
-                    if (callback == null)
+                    if (callback == null) {
+                        complete = true;
                         return;
+                    }
 
                     if (rspModel == null) {
                         callback.onDataNotAvailable(RepositoryContract.NOT_BACK_DATA_ERROR,
                                 onProgressType());
+                        complete = true;
                         return;
                     }
 
                     if (rspModel.isSuccess()) {
                         callback.onDataLoaded(rspModel.getData(), onProgressType());
+                        complete = true;
                         return;
                     }
 
                     callback.onDataNotAvailable(rspModel.getMessage(), onProgressType());
+                    complete = true;
                 }, throwable -> {
-                    if (callback == null)
+                    if (callback == null) {
+                        complete = true;
                         return;
+                    }
 
                     callback.onDataNotAvailable(throwable.getMessage(), onProgressType());
+                    complete = true;
                 });
     }
 
@@ -71,6 +80,11 @@ public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
      * 进度类型
      */
     protected abstract int onProgressType();
+
+    @Override
+    public boolean isComplete() {
+        return complete;
+    }
 
     /**
      * 销毁

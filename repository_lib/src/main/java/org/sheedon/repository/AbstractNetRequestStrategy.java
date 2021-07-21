@@ -27,6 +27,6 @@ public abstract class AbstractNetRequestStrategy<RequestCard, ResponseModel>
 
     @Override
     protected int onProgressType() {
-        return StrategyConfig.PROGRESS.REQUEST_NETWORK;
+        return StrategyConfig.PROGRESS.REQUEST_DOING;
     }
 }
