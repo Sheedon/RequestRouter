@@ -30,7 +30,8 @@ public class BaseRequestStrategyFactory<RequestCard, ResponseModel>
             StrategyHandle.StrategyCallback<ResponseModel> callback,
             StrategyHandle.Responsibilities handler, int strategyType) {
         if (requestStrategiesQueue == null) {
-            requestStrategiesQueue = handler.loadRequestQueue(strategyType, onCreateRealLocalRequestStrategy(callback),
+            requestStrategiesQueue = handler.loadRequestQueue(strategyType,
+                    onCreateRealLocalRequestStrategy(callback),
                     onCreateRealNetworkRequestStrategy(callback));
         }
         return requestStrategiesQueue;
