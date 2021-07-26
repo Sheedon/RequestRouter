@@ -17,11 +17,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
         implements Request<RequestCard> {
 
-    protected StrategyHandle.StrategyCallback<ResponseModel> callback;
+    protected org.sheedon.repository.StrategyHandle.StrategyCallback<ResponseModel> callback;
     private Disposable disposable;
-    private boolean complete = false;
 
-    public BaseRequestStrategy(StrategyHandle.StrategyCallback<ResponseModel> callback) {
+    public BaseRequestStrategy(org.sheedon.repository.StrategyHandle.StrategyCallback<ResponseModel> callback) {
         this.callback = callback;
     }
 
@@ -40,35 +39,35 @@ public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(rspModel -> {
-                    if (callback == null) {
-                        complete = true;
+                    if (callback == null)
                         return;
-                    }
 
                     if (rspModel == null) {
-                        callback.onDataNotAvailable(RepositoryContract.NOT_BACK_DATA_ERROR,
+                        callback.onDataNotAvailable(org.sheedon.repository.RepositoryContract.NOT_BACK_DATA_ERROR,
                                 onProgressType());
-                        complete = true;
                         return;
                     }
 
                     if (rspModel.isSuccess()) {
                         callback.onDataLoaded(rspModel.getData(), onProgressType());
-                        complete = true;
                         return;
                     }
 
                     callback.onDataNotAvailable(rspModel.getMessage(), onProgressType());
-                    complete = true;
+                    onSuccessComplete();
                 }, throwable -> {
-                    if (callback == null) {
-                        complete = true;
+                    if (callback == null)
                         return;
-                    }
 
                     callback.onDataNotAvailable(throwable.getMessage(), onProgressType());
-                    complete = true;
                 });
+    }
+
+    /**
+     * 成功返回结果
+     */
+    protected void onSuccessComplete(){
+
     }
 
     /**
@@ -80,11 +79,6 @@ public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
      * 进度类型
      */
     protected abstract int onProgressType();
-
-    @Override
-    public boolean isComplete() {
-        return complete;
-    }
 
     /**
      * 销毁

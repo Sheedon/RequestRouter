@@ -1,12 +1,10 @@
 package org.sheedon.repository.strategy;
 
+import android.util.SparseArray;
 
 import org.sheedon.repository.Request;
 import org.sheedon.repository.StrategyHandle;
 import org.sheedon.repository.data.DataSource;
-
-import java.util.Queue;
-
 
 /**
  * 基础策略执行者
@@ -25,12 +23,14 @@ public abstract class BaseStrategyHandler implements StrategyHandle {
      * @param requestStrategies 请求策略集合
      * @param card              请求卡片
      * @param callback          反馈监听器
-     * @return 是否调用成功
+     * @param <RequestCard>     请求卡片
+     * @return 是否处理成功
      */
     @Override
-    public <RequestCard> boolean handleRequestStrategy(Queue<Request<RequestCard>> requestStrategies,
-                                                       RequestCard card) {
-        return handleRealRequestStrategy(requestStrategies, card);
+    public <RequestCard> boolean handleRequestStrategy(int progress,
+                                                       SparseArray<Request<RequestCard>> requestStrategies,
+                                                       RequestCard card, ProgressCallback callback) {
+        return handleRealRequestStrategy(progress, requestStrategies, card, callback);
     }
 
     /**
@@ -40,43 +40,68 @@ public abstract class BaseStrategyHandler implements StrategyHandle {
      * @param requestStrategies 请求策略集合
      * @param card              请求卡片
      * @param callback          反馈监听器
+     * @param <RequestCard>     请求卡片类型
      * @return 是否调用成功
      */
-    protected abstract <RequestCard>
-    boolean handleRealRequestStrategy(Queue<Request<RequestCard>> requestStrategies,
-                                      RequestCard card);
+    protected abstract <RequestCard> boolean handleRealRequestStrategy(int progress,
+                                                                       SparseArray<Request<RequestCard>> requestStrategies,
+                                                                       RequestCard card, ProgressCallback callback);
 
     /**
      * 处理反馈代理
      *
-     * @param callback      反馈监听
-     * @param responseModel 反馈数据
-     * @param message       描述信息
-     * @param isSuccess     是否请求成功
+     * @param currentProgress  当前进度
+     * @param callbackProgress 反馈进度
+     * @param callback         反馈监听
+     * @param responseModel    结果model
+     * @param message          描述信息
+     * @param isSuccess        是否请求成功
+     * @param progressCallback 进度监听器
+     * @param <ResponseModel>  结果model类型
+     * @return 是否处理成功
      */
     @Override
-    public <RequestCard, ResponseModel>
-    int handleCallbackStrategy(Queue<Request<RequestCard>> requestStrategies,
-                               DataSource.Callback<ResponseModel> callback,
-                               ResponseModel responseModel, String message,
-                               boolean isSuccess) {
+    public <ResponseModel> boolean handleCallbackStrategy(int currentProgress, int callbackProgress,
+                                                          DataSource.Callback<ResponseModel> callback,
+                                                          ResponseModel responseModel, String message,
+                                                          boolean isSuccess, ProgressCallback progressCallback) {
 
-        return handleRealCallbackStrategy(requestStrategies, callback, responseModel, message, isSuccess);
+        // 当前状态已完成，或者 callback 为空，直接返回状态，不做额外反馈处理
+        if (currentProgress == StrategyConfig.PROGRESS.COMPLETE) {
+            progressCallback.onCurrentProgressCallback(StrategyConfig.PROGRESS.COMPLETE);
+            return false;
+        }
+
+        // 错误处理直接反馈错误信息，并返回 COMPLETE
+        if (currentProgress == StrategyConfig.PROGRESS.ERROR) {
+            progressCallback.onCurrentProgressCallback(StrategyConfig.PROGRESS.COMPLETE);
+            callback.onDataNotAvailable(message);
+            return false;
+        }
+
+        // 真实执行
+        return handleRealCallbackStrategy(currentProgress, callbackProgress, callback,
+                responseModel, message, isSuccess, progressCallback);
     }
 
     /**
      * 真实处理反馈代理
      *
-     * @param callback      反馈监听
-     * @param responseModel 反馈数据
-     * @param message       描述信息
-     * @param isSuccess     是否请求成功
+     * @param currentProgress  当前进度
+     * @param callbackProgress 反馈进度
+     * @param callback         反馈监听
+     * @param responseModel    反馈结果
+     * @param message          描述信息
+     * @param isSuccess        是否请求成功
+     * @param progressCallback 进度反馈监听器
+     * @param <ResponseModel>  反馈model类型
+     * @return 是否处理成功
      */
-    protected abstract <RequestCard, ResponseModel>
-    int handleRealCallbackStrategy(Queue<Request<RequestCard>> requestStrategies,
-                                    DataSource.Callback<ResponseModel> callback,
-                                    ResponseModel responseModel, String message,
-                                    boolean isSuccess);
+    protected abstract <ResponseModel>
+    boolean handleRealCallbackStrategy(int currentProgress, int callbackProgress,
+                                       DataSource.Callback<ResponseModel> callback,
+                                       ResponseModel responseModel, String message,
+                                       boolean isSuccess, ProgressCallback progressCallback);
 
     /**
      * 处理反馈结果

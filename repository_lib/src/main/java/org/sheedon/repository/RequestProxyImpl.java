@@ -17,7 +17,7 @@ public interface RequestProxyImpl {
      *
      * @return StrategyHandle
      */
-    StrategyHandle.Responsibilities bindStrategyHandler();
+    org.sheedon.repository.StrategyHandle.Responsibilities bindStrategyHandler();
 
     /**
      * 代理请求入口

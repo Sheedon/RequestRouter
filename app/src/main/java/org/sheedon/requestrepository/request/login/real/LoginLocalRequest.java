@@ -32,9 +32,9 @@ public class LoginLocalRequest extends AbstractLocalRequestStrategy<LoginCard, L
 
         if (loginCard != null && Objects.equals(loginCard.getUserName(), "admin")
                 && Objects.equals(loginCard.getPassword(), "root")) {
-            callback.onDataLoaded(LoginModel.build(), StrategyConfig.PROGRESS.REQUEST_DOING);
+            callback.onDataLoaded(LoginModel.build(), StrategyConfig.PROGRESS.REQUEST_LOCAL);
         } else {
-            callback.onDataNotAvailable("账号密码错误!",StrategyConfig.PROGRESS.REQUEST_DOING);
+            callback.onDataNotAvailable("账号密码错误!",StrategyConfig.PROGRESS.REQUEST_LOCAL);
         }
     }
 

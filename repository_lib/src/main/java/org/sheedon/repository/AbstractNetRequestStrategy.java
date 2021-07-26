@@ -13,7 +13,7 @@ public abstract class AbstractNetRequestStrategy<RequestCard, ResponseModel>
         extends BaseRequestStrategy<RequestCard, ResponseModel> {
 
 
-    public AbstractNetRequestStrategy(StrategyHandle.StrategyCallback<ResponseModel> callback) {
+    public AbstractNetRequestStrategy(org.sheedon.repository.StrategyHandle.StrategyCallback<ResponseModel> callback) {
         super(callback);
     }
 
@@ -27,6 +27,6 @@ public abstract class AbstractNetRequestStrategy<RequestCard, ResponseModel>
 
     @Override
     protected int onProgressType() {
-        return StrategyConfig.PROGRESS.REQUEST_DOING;
+        return StrategyConfig.PROGRESS.REQUEST_NETWORK;
     }
 }
