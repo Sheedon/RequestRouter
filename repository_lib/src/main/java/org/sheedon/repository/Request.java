@@ -32,7 +32,7 @@ public interface Request<RequestCard> {
          */
         public @Nullable
         SparseArray<Request<RequestCard>>
-        createRequestStrategies(org.sheedon.repository.StrategyHandle.StrategyCallback<ResponseModel> callback) {
+        createRequestStrategies(StrategyHandle.StrategyCallback<ResponseModel> callback) {
 
             return null;
         }
