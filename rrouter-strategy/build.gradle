@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.library'
-    id 'maven-publish'
 }
 
 android {
@@ -38,16 +37,5 @@ dependencies {
     api project(':rrouter-core')
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
-                from components.release
-                groupId = 'org.sheedon.rrouter'
-                artifactId = 'repository-strategy'
-                version = '1.0'
-            }
-        }
-    }
-}
+
+apply from: '../script/gradle-jcenter-push.gradle'

@@ -1,3 +1,5 @@
-rootProject.name = "RequestRepository"
+rootProject.name = "RequestRouter"
 include ':app'
-include ':repository_lib'
+//include ':repository_lib'
+include ':rrouter-core'
+include ':rrouter-strategy'
