@@ -17,10 +17,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
         implements Request<RequestCard> {
 
-    protected org.sheedon.repository.StrategyHandle.StrategyCallback<ResponseModel> callback;
+    protected StrategyHandle.StrategyCallback<ResponseModel> callback;
     private Disposable disposable;
 
-    public BaseRequestStrategy(org.sheedon.repository.StrategyHandle.StrategyCallback<ResponseModel> callback) {
+    public BaseRequestStrategy(StrategyHandle.StrategyCallback<ResponseModel> callback) {
         this.callback = callback;
     }
 
@@ -43,7 +43,7 @@ public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
                         return;
 
                     if (rspModel == null) {
-                        callback.onDataNotAvailable(org.sheedon.repository.RepositoryContract.NOT_BACK_DATA_ERROR,
+                        callback.onDataNotAvailable(RepositoryContract.NOT_BACK_DATA_ERROR,
                                 onProgressType());
                         return;
                     }

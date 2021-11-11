@@ -1,32 +1,38 @@
-package org.sheedon.repository.data;
+package org.sheedon.requestrepository;
+
+import org.sheedon.rrouter.model.IRspModel;
 
 /**
- * 网络数据结果
+ * java类作用描述
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
- * @Date: 2021/6/24 5:03 下午
+ * @Date: 2021/11/3 4:54 下午
  */
-public class RspModel<T> {
+public class RspModel<T> implements IRspModel<T> {
 
     private String code;
     private String message;
     private T data;
 
+
     public String getCode() {
         return code;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
+    @Override
     public T getData() {
         return data;
     }
 
+    @Override
     public boolean isSuccess() {
         return code != null && code.equals("0000");
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
     }
 
     /**

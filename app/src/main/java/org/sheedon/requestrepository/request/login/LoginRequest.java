@@ -1,16 +1,11 @@
 package org.sheedon.requestrepository.request.login;
 
-import org.sheedon.repository.BaseRequestStrategyFactory;
-import org.sheedon.repository.DefaultStrategyHandler;
-import org.sheedon.repository.Request;
-import org.sheedon.repository.StrategyHandle;
-import org.sheedon.repository.data.DataSource;
-import org.sheedon.repository.strategy.StrategyConfig;
+
+import org.sheedon.rrouter.BaseRequestStrategyFactory;
+import org.sheedon.rrouter.DataSource;
 import org.sheedon.requestrepository.data.card.LoginCard;
 import org.sheedon.requestrepository.data.model.LoginModel;
 import org.sheedon.requestrepository.request.BaseRequest;
-import org.sheedon.requestrepository.request.login.real.LoginLocalRequest;
-import org.sheedon.requestrepository.request.login.real.LoginNetWorkRequest;
 
 /**
  * 登陆请求
