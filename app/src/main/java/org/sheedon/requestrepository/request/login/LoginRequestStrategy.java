@@ -1,9 +1,9 @@
 package org.sheedon.requestrepository.request.login;
 
-import org.sheedon.rrouter.BaseRequestStrategyFactory;
-import org.sheedon.rrouter.Request;
-import org.sheedon.rrouter.StrategyConfig;
-import org.sheedon.rrouter.StrategyHandle;
+import org.sheedon.repository.BaseRequestStrategyFactory;
+import org.sheedon.repository.Request;
+import org.sheedon.repository.StrategyHandle;
+import org.sheedon.repository.strategy.StrategyConfig;
 import org.sheedon.requestrepository.data.card.LoginCard;
 import org.sheedon.requestrepository.data.model.LoginModel;
 import org.sheedon.requestrepository.request.login.real.LoginLocalRequest;
@@ -42,6 +42,6 @@ public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, 
      */
     @Override
     public int onLoadRequestStrategyType() {
-        return StrategyConfig.STRATEGY.TYPE_SYNC_REMOTE_AND_LOCATION;
+        return StrategyConfig.STRATEGY.TYPE_SYNC_NETWORK_AND_LOCATION;
     }
 }

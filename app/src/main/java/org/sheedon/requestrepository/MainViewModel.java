@@ -3,7 +3,7 @@ package org.sheedon.requestrepository;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import org.sheedon.rrouter.DataSource;
+import org.sheedon.repository.data.DataSource;
 import org.sheedon.requestrepository.data.model.LoginModel;
 import org.sheedon.requestrepository.request.login.LoginRequest;
 

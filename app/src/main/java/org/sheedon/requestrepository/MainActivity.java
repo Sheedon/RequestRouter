@@ -6,9 +6,6 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import org.sheedon.rrouter.ConfigRepository;
-import org.sheedon.rrouter.RRouter;
-import org.sheedon.rrouter.StrategyConfig;
 import org.sheedon.requestrepository.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,12 +19,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        ConfigRepository repository = new ConfigRepository.Builder()
-                .strategyArray(StrategyConfig.strategyHandlerArray)
-                .build();
-
-        RRouter.setUp(getApplication(), repository);
 
         MainViewModel model = new MainViewModel();
         binding.setVm(model);

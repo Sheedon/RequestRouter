@@ -1,8 +1,8 @@
 package org.sheedon.requestrepository.request.login;
 
 
-import org.sheedon.rrouter.BaseRequestStrategyFactory;
-import org.sheedon.rrouter.DataSource;
+import org.sheedon.repository.BaseRequestStrategyFactory;
+import org.sheedon.repository.data.DataSource;
 import org.sheedon.requestrepository.data.card.LoginCard;
 import org.sheedon.requestrepository.data.model.LoginModel;
 import org.sheedon.requestrepository.request.BaseRequest;
