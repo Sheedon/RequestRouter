@@ -1,5 +1,7 @@
 package org.sheedon.rrouter;
 
+import org.sheedon.rrouter.core.support.StrategyCallback;
+
 /**
  * 默认本地请求策略
  *
@@ -10,7 +12,7 @@ package org.sheedon.rrouter;
 public abstract class AbstractLocalRequestStrategy<RequestCard, ResponseModel>
         extends BaseRequestStrategy<RequestCard, ResponseModel> {
 
-    public AbstractLocalRequestStrategy(StrategyHandle.StrategyCallback<ResponseModel> callback) {
+    public AbstractLocalRequestStrategy(StrategyCallback<ResponseModel> callback) {
         super(callback);
     }
 

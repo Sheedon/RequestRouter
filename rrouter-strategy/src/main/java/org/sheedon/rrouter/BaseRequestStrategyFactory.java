@@ -4,6 +4,9 @@ import android.util.SparseArray;
 
 import androidx.annotation.Nullable;
 
+import org.sheedon.rrouter.core.support.Request;
+import org.sheedon.rrouter.core.support.StrategyCallback;
+
 /**
  * 基础请求策略实现工厂
  *
@@ -12,7 +15,7 @@ import androidx.annotation.Nullable;
  * @Date: 2021/7/18 11:55 上午
  */
 public class BaseRequestStrategyFactory<RequestCard, ResponseModel>
-        extends Request.Factory<RequestCard, ResponseModel> {
+        extends RequestFactory<RequestCard, ResponseModel> {
 
     // 请求策略
     private SparseArray<Request<RequestCard>> requestStrategies;
@@ -24,14 +27,14 @@ public class BaseRequestStrategyFactory<RequestCard, ResponseModel>
     @Nullable
     @Override
     public SparseArray<Request<RequestCard>> createRequestStrategies(
-            StrategyHandle.StrategyCallback<ResponseModel> callback) {
+            StrategyCallback<ResponseModel> callback) {
         if (requestStrategies == null) {
             requestStrategies = new SparseArray<>();
 
             requestStrategies.put(StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST,
                     onCreateRealLocalRequestStrategy(callback));
             requestStrategies.put(StrategyConfig.REQUEST.TYPE_REMOTE_REQUEST,
-                    onCreateRealNetworkRequestStrategy(callback));
+                    onCreateRealRemoteRequestStrategy(callback));
         }
         return requestStrategies;
     }
@@ -56,7 +59,7 @@ public class BaseRequestStrategyFactory<RequestCard, ResponseModel>
      * @return Request<RequestCard, ResponseModel>
      */
     protected Request<RequestCard> onCreateRealLocalRequestStrategy(
-            StrategyHandle.StrategyCallback<ResponseModel> callback) {
+            StrategyCallback<ResponseModel> callback) {
         return null;
     }
 
@@ -66,8 +69,8 @@ public class BaseRequestStrategyFactory<RequestCard, ResponseModel>
      * @param callback 反馈监听器
      * @return Request<RequestCard, ResponseModel>
      */
-    protected Request<RequestCard> onCreateRealNetworkRequestStrategy(
-            StrategyHandle.StrategyCallback<ResponseModel> callback) {
+    protected Request<RequestCard> onCreateRealRemoteRequestStrategy(
+            StrategyCallback<ResponseModel> callback) {
         return null;
     }
 

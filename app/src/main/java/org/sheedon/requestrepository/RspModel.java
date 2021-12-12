@@ -1,9 +1,9 @@
 package org.sheedon.requestrepository;
 
-import org.sheedon.rrouter.model.IRspModel;
+import org.sheedon.rrouter.strategy.model.IRspModel;
 
 /**
- * java类作用描述
+ * 反馈实现
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com

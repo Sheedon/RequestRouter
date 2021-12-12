@@ -7,6 +7,8 @@ import org.sheedon.rrouter.strategy.NotDataToRemoteStrategyHandler;
 import org.sheedon.rrouter.strategy.OnlyLocalStrategyHandler;
 import org.sheedon.rrouter.strategy.OnlyRemoteStrategyHandler;
 import org.sheedon.rrouter.strategy.SyncRemoteAndLocationStrategyHandler;
+import org.sheedon.rrouter.strategy.parameter.DefaultRequestType;
+import org.sheedon.rrouter.strategy.parameter.DefaultStrategy;
 
 /**
  * 策略配置项
@@ -20,20 +22,13 @@ public interface StrategyConfig {
     /**
      * 策略
      */
-    interface STRATEGY {
-        int TYPE_ONLY_REMOTE = 0;// 单一远程（网络）请求
-        int TYPE_NOT_DATA_TO_REMOTE = 1;// 优先本地，无数据取远程（网络）
-        int TYPE_SYNC_REMOTE_AND_LOCATION = 2;// 同步请求，本地和远程（网络）
-        int TYPE_NOT_DATA_TO_LOCATION = 3;//优先远程（网络）请求，远程（网络）请求失败，搜索本地数据 「类似无网络登陆」
-        int TYPE_ONLY_LOCAL = 4;// 单一本地请求
+    interface STRATEGY extends DefaultStrategy {
     }
 
     /**
      * 请求类型
      */
-    interface REQUEST {
-        int TYPE_REMOTE_REQUEST = 1;// 远程请求
-        int TYPE_LOCAL_REQUEST = 2;// 本地请求
+    interface REQUEST extends DefaultRequestType {
     }
 
 

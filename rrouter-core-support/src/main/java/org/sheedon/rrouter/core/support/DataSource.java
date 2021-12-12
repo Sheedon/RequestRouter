@@ -1,4 +1,4 @@
-package org.sheedon.rrouter;
+package org.sheedon.rrouter.core.support;
 
 /**
  * 数据源接口定义

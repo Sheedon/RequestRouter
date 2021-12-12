@@ -2,10 +2,9 @@ package org.sheedon.requestrepository.request.login;
 
 
 import org.sheedon.rrouter.BaseRequestStrategyFactory;
-import org.sheedon.rrouter.DataSource;
+import org.sheedon.rrouter.core.support.DataSource;
 import org.sheedon.requestrepository.data.card.LoginCard;
 import org.sheedon.requestrepository.data.model.LoginModel;
-import org.sheedon.requestrepository.request.BaseRequest;
 
 /**
  * 登陆请求

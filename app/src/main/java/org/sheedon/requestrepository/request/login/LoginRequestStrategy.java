@@ -1,13 +1,13 @@
 package org.sheedon.requestrepository.request.login;
 
 import org.sheedon.rrouter.BaseRequestStrategyFactory;
-import org.sheedon.rrouter.Request;
 import org.sheedon.rrouter.StrategyConfig;
-import org.sheedon.rrouter.StrategyHandle;
 import org.sheedon.requestrepository.data.card.LoginCard;
 import org.sheedon.requestrepository.data.model.LoginModel;
 import org.sheedon.requestrepository.request.login.real.LoginLocalRequest;
 import org.sheedon.requestrepository.request.login.real.LoginNetWorkRequest;
+import org.sheedon.rrouter.core.support.Request;
+import org.sheedon.rrouter.core.support.StrategyCallback;
 
 /**
  * 登陆请求策略
@@ -22,8 +22,8 @@ public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, 
      * 真实网络请求策略
      */
     @Override
-    protected Request<LoginCard> onCreateRealNetworkRequestStrategy(
-            StrategyHandle.StrategyCallback<LoginModel> callback) {
+    protected Request<LoginCard> onCreateRealRemoteRequestStrategy(
+            StrategyCallback<LoginModel> callback) {
         return new LoginNetWorkRequest(callback);
     }
 
@@ -32,7 +32,7 @@ public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, 
      */
     @Override
     protected Request<LoginCard> onCreateRealLocalRequestStrategy(
-            StrategyHandle.StrategyCallback<LoginModel> callback) {
+            StrategyCallback<LoginModel> callback) {
         return new LoginLocalRequest(callback);
     }
 
@@ -42,6 +42,6 @@ public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, 
      */
     @Override
     public int onLoadRequestStrategyType() {
-        return StrategyConfig.STRATEGY.TYPE_SYNC_REMOTE_AND_LOCATION;
+        return StrategyConfig.STRATEGY.TYPE_NOT_DATA_TO_LOCATION;
     }
 }

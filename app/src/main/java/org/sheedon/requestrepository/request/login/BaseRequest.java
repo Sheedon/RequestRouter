@@ -1,9 +1,9 @@
-package org.sheedon.requestrepository.request;
+package org.sheedon.requestrepository.request.login;
 
 
 import org.sheedon.rrouter.AbstractRequestProxy;
 import org.sheedon.rrouter.BaseRequestStrategyFactory;
-import org.sheedon.rrouter.DataSource;
+import org.sheedon.rrouter.core.support.DataSource;
 
 /**
  * 基础请求

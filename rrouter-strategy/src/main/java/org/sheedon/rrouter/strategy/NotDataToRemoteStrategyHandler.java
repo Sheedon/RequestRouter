@@ -2,10 +2,10 @@ package org.sheedon.rrouter.strategy;
 
 import android.util.SparseArray;
 
-import org.sheedon.rrouter.DataSource;
+import org.sheedon.rrouter.core.support.DataSource;
 import org.sheedon.rrouter.ProcessChain;
-import org.sheedon.rrouter.Request;
 import org.sheedon.rrouter.StrategyConfig;
+import org.sheedon.rrouter.core.support.Request;
 
 /**
  * 优先本地，无数据取网络
@@ -58,8 +58,22 @@ public class NotDataToRemoteStrategyHandler extends BaseStrategyHandler {
     @Override
     protected <ResponseModel> boolean handleRealCallbackStrategy(ProcessChain processChain,
                                                                  DataSource.Callback<ResponseModel> callback,
-                                                                 ResponseModel responseModel, String message,
+                                                                 ResponseModel model, String message,
                                                                  boolean isSuccess) {
-        return super.handleRealCallbackStrategy(processChain, callback, responseModel, message, isSuccess);
+        // 状态并非「发送中」，则反馈执行失败
+        if (processChain.getCurrentStatus() != ProcessChain.STATUS_REQUESTING) {
+            processChain.updateCurrentStatus(ProcessChain.STATUS_COMPLETED);
+            return false;
+        }
+
+        if(isSuccess){
+            processChain.updateAllStatusToCompleted();
+        }else{
+            processChain.updateCurrentStatus(ProcessChain.STATUS_COMPLETED);
+        }
+        if(processChain.isAllCompleted()){
+            handleCallback(callback, model, message, isSuccess);
+        }
+        return true;
     }
 }

@@ -1,76 +1,45 @@
 package org.sheedon.requestrepository;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModelProvider;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.View;
 
-import org.sheedon.rrouter.ConfigRepository;
-import org.sheedon.rrouter.RRouter;
-import org.sheedon.rrouter.StrategyConfig;
-import org.sheedon.requestrepository.databinding.ActivityMainBinding;
+import org.sheedon.requestrepository.viewmodel.AnnotationViewModel;
+import org.sheedon.requestrepository.viewmodel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    protected ProgressDialog mLoadingDialog;
-
-    private ActivityMainBinding binding;
+    private MainViewModel mainViewModel;
+    private AnnotationViewModel anViewModel;
+    private ViewDataBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_main);
 
-        ConfigRepository repository = new ConfigRepository.Builder()
-                .strategyArray(StrategyConfig.strategyHandlerArray)
-                .build();
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        RRouter.setUp(getApplication(), repository);
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        binding.setVariable(BR.vm, mainViewModel);
 
-        MainViewModel model = new MainViewModel();
-        binding.setVm(model);
-        binding.setEvent(new EventClick());
-
-        model.result.observe(this, s -> {
-            hideLoading();
-            if (s != null && !s.equals(""))
-                Toast.makeText(MainActivity.this, s, Toast.LENGTH_LONG).show();
-        });
+        anViewModel = new ViewModelProvider(this).get(AnnotationViewModel.class);
+        binding.setVariable(BR.anVm, anViewModel);
+        anViewModel.initConfig();
     }
 
-    public class EventClick {
-        public void onLoginClick() {
-            showLoading();
-            binding.getVm().loginClick();
-        }
+    public void onLoginClick(View view) {
+        mainViewModel.loginClick();
     }
 
-    /**
-     * 显示加载框
-     */
-    public void showLoading() {
-        ProgressDialog dialog = mLoadingDialog;
-        if (dialog == null) {
-            dialog = new ProgressDialog(this);
-            dialog.setCanceledOnTouchOutside(false);
-            mLoadingDialog = dialog;
-        }
-        dialog.setMessage("登陆中");
-        dialog.show();
+    public void onAnLoginClick(View view) {
+        anViewModel.login(mainViewModel.account, mainViewModel.password);
     }
 
-
-    /**
-     * 隐藏加载框
-     */
-    protected void hideLoading() {
-        ProgressDialog dialog = mLoadingDialog;
-        if (dialog != null) {
-            dialog.dismiss();
-        }
-    }
 
     @Override
     protected void onDestroy() {

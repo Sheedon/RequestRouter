@@ -1,5 +1,7 @@
 package org.sheedon.rrouter;
 
+import org.sheedon.rrouter.core.support.StrategyCallback;
+
 /**
  * 网络请求策略
  *
@@ -11,7 +13,7 @@ public abstract class AbstractRemoteRequestStrategy<RequestCard, ResponseModel>
         extends BaseRequestStrategy<RequestCard, ResponseModel> {
 
 
-    public AbstractRemoteRequestStrategy(StrategyHandle.StrategyCallback<ResponseModel> callback) {
+    public AbstractRemoteRequestStrategy(StrategyCallback<ResponseModel> callback) {
         super(callback);
     }
 

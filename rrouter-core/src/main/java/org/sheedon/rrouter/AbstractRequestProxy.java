@@ -4,6 +4,10 @@ import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
 
+import org.sheedon.rrouter.core.support.DataSource;
+import org.sheedon.rrouter.core.support.Request;
+import org.sheedon.rrouter.core.support.StrategyCallback;
+
 import java.util.Objects;
 
 
@@ -19,7 +23,7 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel>
         extends RequestProxy.RequestProxyFactory {
 
     // 请求项
-    private Request.Factory<RequestCard, ResponseModel> request;
+    private RequestFactory<RequestCard, ResponseModel> request;
     // 反馈监听器
     private DataSource.Callback<ResponseModel> callback;
     // 真实调度的请求组
@@ -29,7 +33,7 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel>
     // 请求卡片
     private RequestCard requestCard;
 
-    public AbstractRequestProxy(@NonNull Request.Factory<RequestCard, ResponseModel> request,
+    public AbstractRequestProxy(@NonNull RequestFactory<RequestCard, ResponseModel> request,
                                 DataSource.Callback<ResponseModel> callback) {
         // 填充默认请求工厂和反馈监听器
         this.request = request;
@@ -142,8 +146,8 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel>
     /**
      * 策略反馈监听器
      */
-    private final StrategyHandle.StrategyCallback<ResponseModel> strategyCallback
-            = new StrategyHandle.StrategyCallback<ResponseModel>() {
+    private final StrategyCallback<ResponseModel> strategyCallback
+            = new StrategyCallback<ResponseModel>() {
         /**
          * 数据加载成功
          * @param responseModel 反馈数据
@@ -190,7 +194,6 @@ public abstract class AbstractRequestProxy<RequestCard, ResponseModel>
 
                 // 当前状态为完成，则代表执行完成
                 if (chain.getCurrentStatus() == ProcessChain.STATUS_COMPLETED) {
-                    notifyCallback(isSuccess, responseModel, message);
                     return;
                 }
 

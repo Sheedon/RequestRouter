@@ -1,8 +1,9 @@
 package org.sheedon.requestrepository.request.login.real;
 
+import org.sheedon.requestrepository.RspModel;
 import org.sheedon.rrouter.AbstractLocalRequestStrategy;
-import org.sheedon.rrouter.StrategyHandle;
-import org.sheedon.rrouter.model.IRspModel;
+import org.sheedon.rrouter.core.support.StrategyCallback;
+import org.sheedon.rrouter.strategy.model.IRspModel;
 import org.sheedon.requestrepository.data.card.LoginCard;
 import org.sheedon.requestrepository.data.model.LoginModel;
 
@@ -19,25 +20,18 @@ import io.reactivex.rxjava3.core.Observable;
  */
 public class LoginLocalRequest extends AbstractLocalRequestStrategy<LoginCard, LoginModel> {
 
-    public LoginLocalRequest(StrategyHandle.StrategyCallback<LoginModel> callback) {
+    public LoginLocalRequest(StrategyCallback<LoginModel> callback) {
         super(callback);
     }
 
     @Override
-    public void request(LoginCard loginCard) {
-        if (callback == null)
-            return;
-
+    protected Observable<IRspModel<LoginModel>> onLoadMethod(LoginCard loginCard) {
         if (loginCard != null && Objects.equals(loginCard.getUserName(), "admin")
                 && Objects.equals(loginCard.getPassword(), "root")) {
             callback.onDataLoaded(LoginModel.build());
+            return Observable.just(RspModel.buildToSuccess(LoginModel.build()));
         } else {
-            callback.onDataNotAvailable("账号密码错误!");
+            return Observable.just(RspModel.buildToFailure("账号密码错误"));
         }
-    }
-
-    @Override
-    protected Observable<IRspModel<LoginModel>> onLoadMethod(LoginCard loginCard) {
-        return null;
     }
 }

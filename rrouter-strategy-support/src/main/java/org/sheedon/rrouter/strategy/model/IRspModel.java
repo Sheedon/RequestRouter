@@ -1,4 +1,4 @@
-package org.sheedon.rrouter.model;
+package org.sheedon.rrouter.strategy.model;
 
 /**
  * 基础数据结果反馈接收接口

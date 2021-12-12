@@ -1,0 +1,38 @@
+package org.sheedon.rrouter.facade.annotation;
+
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.LOCAL_VARIABLE;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.CLASS;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+/**
+ * Denotes that the annotated element should be an int or long in the given range
+ * <p>
+ * Example:
+ * <pre><code>
+ *  &#64;IntRange(from=0,to=255)
+ *    public int getAlpha() {
+ *        ...
+ *    }
+ *   </code></pre>
+ *
+ * @Author: androidx.annotation
+ * @Email: sheedonsun@163.com
+ * @Date: 2021/11/15 10:12 下午
+ */
+@Documented
+@Retention(CLASS)
+@Target({METHOD, PARAMETER, FIELD, LOCAL_VARIABLE, ANNOTATION_TYPE})
+public @interface IntRange {
+    /** Smallest value, inclusive */
+    long from() default Long.MIN_VALUE;
+
+    /** Largest value, inclusive */
+    long to() default Long.MAX_VALUE;
+}

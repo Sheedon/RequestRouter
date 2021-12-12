@@ -3,10 +3,11 @@ package org.sheedon.rrouter;
 
 import android.content.Context;
 
-import org.sheedon.rrouter.model.IRspModel;
+import org.sheedon.rrouter.core.support.Request;
+import org.sheedon.rrouter.core.support.StrategyCallback;
+import org.sheedon.rrouter.strategy.support.AbstractRequestStrategy;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -18,14 +19,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * @Date: 2021/7/18 11:33 上午
  */
 public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
-        implements Request<RequestCard> {
+        extends AbstractRequestStrategy<RequestCard, ResponseModel>{
 
-    protected StrategyHandle.StrategyCallback<ResponseModel> callback;
     private Disposable disposable;
     private Context context;
 
-    public BaseRequestStrategy(StrategyHandle.StrategyCallback<ResponseModel> callback) {
-        this.callback = callback;
+    public BaseRequestStrategy(StrategyCallback<ResponseModel> callback) {
+        super(callback);
         this.context = RRouter.getInstance().getContext();
     }
 
@@ -73,11 +73,6 @@ public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
     protected void onSuccessComplete() {
 
     }
-
-    /**
-     * 加载API 方法
-     */
-    protected abstract Observable<IRspModel<ResponseModel>> onLoadMethod(RequestCard requestCard);
 
     /**
      * 取消

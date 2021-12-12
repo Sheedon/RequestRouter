@@ -76,6 +76,13 @@ public class ProcessChain {
         }
     }
 
+    public void updateAllStatusToCompleted() {
+        int length = status.length;
+        for (; progress < length; progress++) {
+            updateOfIndex(progress, STATUS_COMPLETED);
+        }
+    }
+
     /**
      * 获取当前进度
      */
@@ -105,5 +112,17 @@ public class ProcessChain {
         }
 
         return this.status[progress];
+    }
+
+    /**
+     * 是否完成全部请求
+     */
+    public boolean isAllCompleted() {
+        for (int positionStatus : status) {
+            if (positionStatus != STATUS_COMPLETED) {
+                return false;
+            }
+        }
+        return true;
     }
 }

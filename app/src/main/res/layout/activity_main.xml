@@ -7,11 +7,11 @@
 
         <variable
             name="vm"
-            type="org.sheedon.requestrepository.MainViewModel" />
+            type="org.sheedon.requestrepository.viewmodel.MainViewModel" />
 
         <variable
-            name="event"
-            type="org.sheedon.requestrepository.MainActivity.EventClick" />
+            name="anVm"
+            type="org.sheedon.requestrepository.viewmodel.AnnotationViewModel" />
 
     </data>
 
@@ -34,7 +34,8 @@
             android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="Autofill,HardcodedText" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -57,18 +58,31 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            tools:ignore="Autofill,HardcodedText" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="156dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
-            android:onClick="@{()->event.onLoginClick()}"
+            android:onClick="onLoginClick"
             android:text="登陆"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
+            tools:ignore="HardcodedText,UsingOnClickInXml" />
 
+
+        <Button
+            android:layout_width="156dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:onClick="onAnLoginClick"
+            android:text="请求路由方式 调用登陆"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button"
+            tools:ignore="HardcodedText,UsingOnClickInXml" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

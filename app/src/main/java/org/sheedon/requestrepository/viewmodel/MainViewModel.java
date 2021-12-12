@@ -1,14 +1,15 @@
-package org.sheedon.requestrepository;
+package org.sheedon.requestrepository.viewmodel;
 
-import androidx.lifecycle.MutableLiveData;
+import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
 
-import org.sheedon.rrouter.DataSource;
+import org.sheedon.rrouter.core.support.DataSource;
 import org.sheedon.requestrepository.data.model.LoginModel;
 import org.sheedon.requestrepository.request.login.LoginRequest;
 
 /**
- * 主页面-登陆操作
+ * 基础模式下使用请求策略
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
@@ -16,9 +17,7 @@ import org.sheedon.requestrepository.request.login.LoginRequest;
  */
 public class MainViewModel extends ViewModel {
 
-    // 结果
-    public MutableLiveData<String> result = new MutableLiveData<>();
-
+    private static final String TAG = MainViewModel.class.getSimpleName();
 
     // 账户
     public String account;
@@ -33,13 +32,12 @@ public class MainViewModel extends ViewModel {
     public void loginClick() {
         if (account == null || account.isEmpty()
                 || password == null || password.isEmpty()) {
-            result.postValue("账号密码不能为空!");
+            Log.v(TAG,"账号密码不能为空!");
             return;
         }
 
         LoginRequest request = getLoginRequest();
         request.login(account, password);
-
     }
 
     /**
@@ -50,12 +48,12 @@ public class MainViewModel extends ViewModel {
             loginRequest = new LoginRequest(new DataSource.Callback<LoginModel>() {
                 @Override
                 public void onDataNotAvailable(String message) {
-                    result.postValue(message);
+                    Log.v(TAG,message);
                 }
 
                 @Override
                 public void onDataLoaded(LoginModel loginModel) {
-                    result.postValue("user: " + loginModel.getUserId());
+                    Log.v(TAG,"user: " + loginModel.getAccessToken());
                 }
             });
         }
