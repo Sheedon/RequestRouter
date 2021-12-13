@@ -11,8 +11,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/rrouter-annotation" />
+            <option value="$PROJECT_DIR$/rrouter-compiler" />
             <option value="$PROJECT_DIR$/rrouter-core" />
+            <option value="$PROJECT_DIR$/rrouter-core-support" />
             <option value="$PROJECT_DIR$/rrouter-strategy" />
+            <option value="$PROJECT_DIR$/rrouter-strategy-support" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
