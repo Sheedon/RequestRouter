@@ -4,11 +4,14 @@ import org.sheedon.requestrepository.RspModel;
 import org.sheedon.requestrepository.data.card.LoginCard;
 import org.sheedon.requestrepository.data.model.LoginModel;
 import org.sheedon.requestrepository.request.login.real.LoginLocalRequest;
+import org.sheedon.requestrepository.request.login.real.LoginRemoteRequest;
 import org.sheedon.rrouter.core.support.StrategyCallback;
+import org.sheedon.rrouter.facade.annotation.CallbackDataAdapter;
 import org.sheedon.rrouter.facade.annotation.Provider;
 import org.sheedon.rrouter.facade.annotation.RRouter;
 import org.sheedon.rrouter.facade.annotation.RequestDataAdapter;
 import org.sheedon.rrouter.facade.annotation.RequestStrategy;
+import org.sheedon.rrouter.facade.model.Converter;
 import org.sheedon.rrouter.facade.model.RequestBodyAdapter;
 import org.sheedon.rrouter.facade.router.AbstractRequestRouter;
 import org.sheedon.rrouter.strategy.model.IRspModel;
@@ -57,6 +60,15 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
                 : RspModel.buildToFailure("网络请求失败"));
     }
 
+    /**
+     * 远程请求类
+     * @param callback 回调绑定
+     * @return AbstractRequestStrategy<LoginCard, LoginModel>
+     */
+    @Override
+    public AbstractRequestStrategy<LoginCard, LoginModel> remoteRequestClass(StrategyCallback<LoginModel> callback) {
+        return new LoginRemoteRequest(callback);
+    }
 
     /**
      * 复杂逻辑可以添加到「继承AbstractRequestStrategy的类」创建的请求策略类中

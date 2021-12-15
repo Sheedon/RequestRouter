@@ -18,10 +18,10 @@ import io.reactivex.rxjava3.core.Observable;
  * @Email: sheedonsun@163.com
  * @Date: 2021/7/18 2:21 下午
  */
-public class LoginNetWorkRequest extends AbstractRemoteRequestStrategy<LoginCard, LoginModel> {
+public class LoginRemoteRequest extends AbstractRemoteRequestStrategy<LoginCard, LoginModel> {
 
 
-    public LoginNetWorkRequest(StrategyCallback<LoginModel> callback) {
+    public LoginRemoteRequest(StrategyCallback<LoginModel> callback) {
         super(callback);
 
     }

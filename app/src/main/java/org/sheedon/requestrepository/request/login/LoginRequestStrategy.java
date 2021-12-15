@@ -5,7 +5,7 @@ import org.sheedon.rrouter.StrategyConfig;
 import org.sheedon.requestrepository.data.card.LoginCard;
 import org.sheedon.requestrepository.data.model.LoginModel;
 import org.sheedon.requestrepository.request.login.real.LoginLocalRequest;
-import org.sheedon.requestrepository.request.login.real.LoginNetWorkRequest;
+import org.sheedon.requestrepository.request.login.real.LoginRemoteRequest;
 import org.sheedon.rrouter.core.support.Request;
 import org.sheedon.rrouter.core.support.StrategyCallback;
 
@@ -24,7 +24,7 @@ public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, 
     @Override
     protected Request<LoginCard> onCreateRealRemoteRequestStrategy(
             StrategyCallback<LoginModel> callback) {
-        return new LoginNetWorkRequest(callback);
+        return new LoginRemoteRequest(callback);
     }
 
     /**

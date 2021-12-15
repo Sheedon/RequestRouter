@@ -49,6 +49,11 @@ dependencies {
     implementation project(':rrouter-core')
     implementation project(':rrouter-strategy')
 
+//    implementation "com.github.Sheedon.RequestRouter:rrouter-core:v0.2-e-SNAPSHOT"
+//    implementation "com.github.Sheedon.RequestRouter:rrouter-strategy:v0.2-e-SNAPSHOT"
+//    implementation "com.github.Sheedon.RequestRouter:rrouter-annotation:v0.2-e-SNAPSHOT"
+//    annotationProcessor "com.github.Sheedon.RequestRouter:rrouter-compiler:v0.2-e-SNAPSHOT"
+
     implementation project(':rrouter-annotation')
     annotationProcessor project(':rrouter-compiler')
 }
