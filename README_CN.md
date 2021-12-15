@@ -2,6 +2,7 @@
 ```tex
 一个用于帮助 Android App 进行请求行为策略化改造的框架。
 ```
+[English]: https://github.com/Sheedon/RequestRouter/blob/master/README.md	"Englist"
 
 借由请求代理，将请求动作按照策略配置，按需按序调用，简化多种请求方式造成的逻辑复杂度。
 
@@ -28,9 +29,9 @@ allprojects {
 
 ```groovy
 dependencies {
-  			// rrouter-strategy 中已使用 apt ，可无需添加 rrouter-core 的引入
-				// implementation 'com.github.Sheedon.RequestRouter:rrouter-core:lastVersion'
-  			implementation 'com.github.Sheedon.RequestRouter:rrouter-strategy:lastVersion'
+    // rrouter-strategy 中已使用 apt ，可无需添加 rrouter-core 的引入
+    // implementation 'com.github.Sheedon.RequestRouter:rrouter-core:lastVersion'
+    implementation 'com.github.Sheedon.RequestRouter:rrouter-strategy:lastVersion'
 }
 ```
 
@@ -263,8 +264,8 @@ public class MainViewModel{
 
 ```groovy
 dependencies {
-			implementation 'com.github.Sheedon.RequestRouter:rrouter-annotation:lastVersion'
-  		annotationProcessor 'com.github.Sheedon.RequestRouter:rrouter-compiler:lastVersion'
+    implementation 'com.github.Sheedon.RequestRouter:rrouter-annotation:lastVersion'
+    annotationProcessor 'com.github.Sheedon.RequestRouter:rrouter-compiler:lastVersion'
 }
 ```
 
@@ -427,8 +428,8 @@ public class MainViewModel implements MainViewModelComponent.OnCallbackListener 
 
 ```groovy
 dependencies {
-			api 'com.github.Sheedon.RequestRouter:rrouter-core:lastVersion'
-  		api 'com.github.Sheedon.RequestRouter:rrouter-strategy-support:lastVersion'
+    api 'com.github.Sheedon.RequestRouter:rrouter-core:lastVersion'
+    api 'com.github.Sheedon.RequestRouter:rrouter-strategy-support:lastVersion'
 }
 ```
 

@@ -2,6 +2,7 @@
 ```tex
 A framework for helping Android App to strategically transform request behavior.
 ```
+[中文文档]: https://github.com/Sheedon/RequestRouter/blob/master/README_CN.md	"中文文档"
 
 With the request agent, the request action is configured according to the strategy and called in order as needed, simplifying the logic complexity caused by multiple request methods.
 
@@ -28,9 +29,9 @@ allprojects {
 
 ```groovy
 dependencies {
-  			// apt has been used in rrouter-strategy, there is no need to add the introduction of rrouter-core
-				// implementation 'com.github.Sheedon.RequestRouter:rrouter-core:lastVersion'
-  			implementation 'com.github.Sheedon.RequestRouter:rrouter-strategy:lastVersion'
+    // apt has been used in rrouter-strategy, there is no need to add the introduction of rrouter-core
+    // implementation 'com.github.Sheedon.RequestRouter:rrouter-core:lastVersion'
+    implementation 'com.github.Sheedon.RequestRouter:rrouter-strategy:lastVersion'
 }
 ```
 
@@ -264,8 +265,8 @@ so that users only need to consider core business writing.
 
 ```groovy
 dependencies {
-        implementation 'com.github.Sheedon.RequestRouter:rrouter-annotation:lastVersion'
-  		annotationProcessor 'com.github.Sheedon.RequestRouter:rrouter-compiler:lastVersion'
+    implementation 'com.github.Sheedon.RequestRouter:rrouter-annotation:lastVersion'
+    annotationProcessor 'com.github.Sheedon.RequestRouter:rrouter-compiler:lastVersion'
 }
 ```
 
@@ -432,8 +433,8 @@ public class MainViewModel implements MainViewModelComponent.OnCallbackListener 
 
 ```groovy
 dependencies {
-        api 'com.github.Sheedon.RequestRouter:rrouter-core:lastVersion'
-  		api 'com.github.Sheedon.RequestRouter:rrouter-strategy-support:lastVersion'
+    api 'com.github.Sheedon.RequestRouter:rrouter-core:lastVersion'
+    api 'com.github.Sheedon.RequestRouter:rrouter-strategy-support:lastVersion'
 }
 ```
 
