@@ -1,17 +1,17 @@
 # RequestRouter
 ```tex
-A framework for helping Android App to strategically transform request behavior.
+一个用于帮助 Android App 进行请求行为策略化改造的框架。
 ```
 
-With the request agent, the request action is configured according to the strategy and called in order as needed, simplifying the logic complexity caused by multiple request methods.
+借由请求代理，将请求动作按照策略配置，按需按序调用，简化多种请求方式造成的逻辑复杂度。
 
 ![请求路由](https://raw.githubusercontent.com/Sheedon/RequestRouter/82e73f4d32c3f820f8942f77c7fc6ad5feba2288/image/%E8%AF%B7%E6%B1%82%E8%B7%AF%E7%94%B1.svg)
 
 
 
-### ONE、How to use
+### 一、使用方式
 
-#### Step 1: Add the JitPack repository to your build file
+#### 第一步：将 JitPack 存储库添加到您的构建文件中
 
 ```groovy
 allprojects {
@@ -24,66 +24,67 @@ allprojects {
 
 
 
-#### Step 2: Add core dependencies
+#### 第二步：添加核心依赖
 
 ```groovy
 dependencies {
-  			// apt has been used in rrouter-strategy, there is no need to add the introduction of rrouter-core
+  			// rrouter-strategy 中已使用 apt ，可无需添加 rrouter-core 的引入
 				// implementation 'com.github.Sheedon.RequestRouter:rrouter-core:lastVersion'
   			implementation 'com.github.Sheedon.RequestRouter:rrouter-strategy:lastVersion'
 }
 ```
 
-`rrouter-core` , Request routing core package, mainly responsible for proxy execution of request strategy.
+`rrouter-core` ，请求路由核心包，主要负责代理执行请求策略。
 
-The request agent, through the request behavior provided by the client, forwards and requests the policy executor according to the configured scheduling policy, and executes the scheduling plan on its behalf, and after the scheduling result is obtained, the feedback listener provided by the client responds to the client.
+请求代理，借由客户端提供的请求行为，按配置调度策略，转交与请求策略执行器，代为执行调度方案，并在得到调度结果后，由客户端提供的反馈监听器，响应与客户端。
 
-`rrouter-strategy`, Local request + remote request strategy package.
+`rrouter-strategy`，本地请求+远程请求 策略包。
 
-The configured policies include: 
-1. Single remote request 
-2. Single local request 
-3. Priority remote request, failed to take local request 
-4. Priority local request, failed to take remote request 
-5. Parallel remote local request
+已配置策略包括：
+
+1. 单一远程请求
+2. 单一本地请求
+3. 优先远程请求，失败取本地请求
+4. 优先本地请求，失败取远程请求
+5. 并行远程本地请求
 
 
 
-#### Step 3: Initialize SKD
+#### 第三步：初始化SKD
 
 ```java
-// Configure the default (remote and local) execution plan by configuring the warehouse
-// 1⃣ 2⃣ 3⃣ You can choose any one
+// 通过配置仓库配置默认（远程/本地）执行方案
+// 1⃣ 2⃣ 3⃣ 任取一种即可
 ConfigRepository repository = new ConfigRepository.Builder()
-                .factory(new StrategyHandle.Factory())// 1⃣ Add strategy handle factory
-                .strategyArray(StrategyConfig.strategyHandlerArray)// 2⃣ Populates the policy execution collection
-                .strategyHandler(new StrategyHandle.ResponsibilityFactory())// 3⃣ Bind the policy executor
+                .factory(new StrategyHandle.Factory())// 1⃣ 添加策略仓库工厂
+                .strategyArray(StrategyConfig.strategyHandlerArray)// 2⃣ 填充策略执行集合
+                .strategyHandler(new StrategyHandle.ResponsibilityFactory())// 3⃣ 绑定策略执行器
                 .build();
-// Initial setup scheme
-RRouter.setUp(mApplication, repository);// As early as possible, it is recommended to initialize in Application
+// 初始化设置方案
+RRouter.setUp(mApplication, repository);// 尽可能早，推荐在Application中初始化
 ```
 
 
 
-#### Step 4: Build the request
+#### 第四步：构建请求
 
-##### Business request
+##### 业务请求项
 
 ```java
 public class LoginRequest  {
 
-    // Callback listener
+    // 反馈监听器
     protected DataSource.Callback<LoginModel> callback;
-    // Request proxy
+    // 请求代理
     protected AbstractRequestProxy<LoginCard, LoginModel> proxy;
-    // request card
+    // 请求卡片
     private final LoginCard requestCard = new LoginCard();
 
     public LoginRequest(DataSource.Callback<LoginModel> callback) {
         this.callback = callback;
         proxy = new AbstractRequestProxy<LoginCard,
-                LoginModel>(new LoginRequestStrategy(),// request strategy
-                createProxyCallback()) {// proxy callback
+                LoginModel>(new LoginRequestStrategy(),// 请求策略
+                createProxyCallback()) {// 代理反馈监听器
             @Override
             protected LoginCard onCreateRequestCard() {
                 return requestCard;
@@ -92,10 +93,10 @@ public class LoginRequest  {
     }
 
     /**
-     * login
+     * 登陆
      *
-     * @param account  account
-     * @param password password
+     * @param account  账号
+     * @param password 密码
      */
     public void login(String account, String password) {
         requestCard.update(account, password);
@@ -103,7 +104,7 @@ public class LoginRequest  {
     }
 
     /**
-     * Create proxy callback listener
+     * 创建代理反馈监听器
      */
     protected DataSource.Callback<LoginModel> createProxyCallback() {
         return new DataSource.Callback<LoginModel>() {
@@ -122,7 +123,7 @@ public class LoginRequest  {
     }
 
     /**
-     * destroy
+     * 销毁
      */
     public void destroy() {
         if (proxy != null) {
@@ -134,13 +135,13 @@ public class LoginRequest  {
 }
 ```
 
-##### Request strategy factory, configure the real scheduling request strategy, and request strategy type
+##### 请求策略工厂，配置真实调度的请求策略，以及请求策略类型
 
 ```java
 public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, LoginModel> {
 
     /**
-     * Real network request strategy
+     * 真实网络请求策略
      */
     @Override
     protected Request<LoginCard> onCreateRealRemoteRequestStrategy(
@@ -149,7 +150,7 @@ public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, 
     }
 
     /**
-     * real local request strategy
+     * 真实本地请求策略
      */
     @Override
     protected Request<LoginCard> onCreateRealLocalRequestStrategy(
@@ -158,8 +159,8 @@ public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, 
     }
 
     /**
-     * Priority network request login
-     * Otherwise, log in according to the account record kept locally
+     * 优先网络请求登陆
+     * 否则按照本地保留的账号记录登陆操作
      */
     @Override
     public int onLoadRequestStrategyType() {
@@ -168,7 +169,7 @@ public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, 
 }
 ```
 
-##### Remote request strategy
+##### 远程请求策略
 
 ```java
 public class LoginRemoteRequest extends AbstractRemoteRequestStrategy<LoginCard, LoginModel> {
@@ -177,7 +178,7 @@ public class LoginRemoteRequest extends AbstractRemoteRequestStrategy<LoginCard,
         super(callback);
     }
 
-  	// Actually use rxjava + retrofit 
+  	// 实际可用 rxjava + retrofit 
     @Override
     protected Observable<IRspModel<LoginModel>> onLoadMethod(LoginCard loginCard) {
         return Observable.just(RspModel.buildToSuccess(LoginModel.build()));
@@ -186,7 +187,7 @@ public class LoginRemoteRequest extends AbstractRemoteRequestStrategy<LoginCard,
 }
 ```
 
-##### Local request policy
+##### 本地请求策略
 
 ```java
 public class LoginLocalRequest extends AbstractLocalRequestStrategy<LoginCard, LoginModel> {
@@ -202,13 +203,13 @@ public class LoginLocalRequest extends AbstractLocalRequestStrategy<LoginCard, L
             callback.onDataLoaded(LoginModel.build());
             return Observable.just(RspModel.buildToSuccess(LoginModel.build()));
         } else {
-            return Observable.just(RspModel.buildToFailure("Incorrect account password"));
+            return Observable.just(RspModel.buildToFailure("账号密码错误"));
         }
     }
 }
 ```
 
-#### Binding use
+#### 绑定使用
 
 ```java
 public class MainViewModel{
@@ -216,7 +217,7 @@ public class MainViewModel{
     private LoginRequest loginRequest;
 
     /**
-     * Login action
+     * 登陆动作
      */
     public void loginClick() {
         LoginRequest request = getLoginRequest();
@@ -224,7 +225,7 @@ public class MainViewModel{
     }
 
     /**
-     * Login request, create request method creation
+     * 登陆请求,创建请求方法创建
      */
     private LoginRequest getLoginRequest() {
         if (loginRequest == null) {
@@ -243,8 +244,8 @@ public class MainViewModel{
         return loginRequest;
     }
 
-    /**
-     * destroy
+		/**
+     * 销毁
      */
     public void onDestroy() {
         loginRequest.destroy();
@@ -254,45 +255,42 @@ public class MainViewModel{
 
 
 
-### TWO、Advanced version
+### 二、进阶版
 
-Simplified support for the provided `strategy library`. 
-We use `notes` here to help users generate target template code during the compilation phase, 
-so that users only need to consider core business writing.
+对已提供的 `策略库` 的简化支持。我们这里使用 `注解` ，帮助使用者在编译阶段生成目标模版代码，让使用者只需考虑核心业务编写。
 
-#### Step 1: On the original basis, add a policy dependency
+#### 第一步：在原有基础上，添加策略依赖
 
 ```groovy
 dependencies {
-        implementation 'com.github.Sheedon.RequestRouter:rrouter-annotation:lastVersion'
+			implementation 'com.github.Sheedon.RequestRouter:rrouter-annotation:lastVersion'
   		annotationProcessor 'com.github.Sheedon.RequestRouter:rrouter-compiler:lastVersion'
 }
 ```
 
-#### Step 2: Add request routing
+#### 第二步：添加请求路由
 
 ```java
-// Request routing annotation
-// Support four items
-// 1. Request strategy type: requestStrategy
-// 2. Whether to give priority to the annotation request strategy type：used
-// 3. localRequestClass Local request strategy class-can be directly bound to the original implementation LoginLocalRequest.class
-// 4. remoteRequestClass Remote request strategy class-can be directly bound to the original implementation LoginRemoteRequest.class
-// Request routing class, currently only supports inheriting AbstractRequestRouter implementation
+// 请求路由注解
+// 支持四项内容
+// 1. 请求策略类型：requestStrategy  
+// 2. 是否优先使用注解请求策略类型：used
+// 3. localRequestClass 本地请求策略类 - 可直接绑定原实现中的 LoginLocalRequest.class
+// 4. remoteRequestClass 远程请求策略类 - 可直接绑定原实现中的 LoginRemoteRequest.class
+// 请求路由类，当前只支持 继承 AbstractRequestRouter 实现
 @RRouter(requestStrategy = DefaultStrategy.TYPE_NOT_DATA_TO_LOCATION)
 public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
 
     /**
-     * @Provider It is used to annotate the construction method. 
-     * After annotation, the method implementation of the construction method will be created in the class generated at compile time.
-     * Used to create objects with annotations
+     * @Provider 用于标注构造方法，标注后，才会在编译时生成的类中创建 该构造方法 的方法实现。
+     * 用于注解创建对象
      */
     @Provider
     public LoginRouter() {
     }
 
     /**
-     * Used for annotation to create objects with parameters
+     * 用于注解创建带参对象
      */
     @Provider
     LoginRouter(String name, String password) {
@@ -301,29 +299,27 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
     }
 
     /**
-     * @RequestStrategy After annotation, request methods are used on classes created at compile time.
-     * A maximum of one can be used locally or remotely. The positions that can be added are as follows: onLoadRemoteMethod/remoteRequestClass
+     * @RequestStrategy 标注后，才会在编译时创建的类上去使用请求方法。
+     * 本地/远程 各自最多使用一个，可添加的位置分别是：onLoadRemoteMethod/remoteRequestClass
      * /onLoadLocalMethod/localRequestClass 
-     * If you do not want to use the methods provided by default, 
-     * you can also customize the implementation by adding a requestStrategy field in the annotation to indicate the invocation request type.
+     * 若不希望使用默认提供的方法，也可自定义实现，自定义实现，需在注解中添加requestStrategy字段，以表明调用请求类型。
      *
-     * Remote request method
+     * 远程请求方法
      * 
-     * @param loginCard Request card
+     * @param loginCard 请求卡片
      * @return Observable<IRspModel<LoginModel>>
      */
     @RequestStrategy
     @Override
     public Observable<IRspModel<LoginModel>> onLoadRemoteMethod(LoginCard loginCard) {
         return Observable.just(new Random().nextBoolean() ? RspModel.buildToSuccess(LoginModel.build())
-                : RspModel.buildToFailure("Network request failed"));
+                : RspModel.buildToFailure("网络请求失败"));
     }
   
     /**
-     * If the on Load Remote Method has been used and the @Request Strategy annotation has been marked, 
-     * @Request Strategy cannot be added to the current method
-     * Remote request class
-     * @param callback bind callback
+     * 若已使用onLoadRemoteMethod，标注@RequestStrategy注解，当前方法便不可添加@RequestStrategy
+     * 远程请求类
+     * @param callback 回调绑定
      * @return AbstractRequestStrategy<LoginCard, LoginModel>
      */
     @Override
@@ -333,8 +329,8 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
 
 
     /**
-     * Complex logic can be added to a request policy class created "class that inherits AbstractRequestStrategy"
-     * A simple build can be done directly using the onLoadLocalMethod method, {@link onLoadRemoteMethod()}
+     * 复杂逻辑可以添加到「继承AbstractRequestStrategy的类」创建的请求策略类中
+     * 简单的可以直接使用onLoadLocalMethod方法构建，参考 {@link onLoadRemoteMethod()}
      */
     @Override
     @RequestStrategy
@@ -343,11 +339,10 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
     }
 
     /**
-     * @RequestDataAdapter Request data converter annotation
-     * Currently, annotations are only supported on requestAdapter methods and must be
-     * The goal is to convert "request data" into "request cards"
-     * 
-     * Request the data conversion adapter
+     * @RequestDataAdapter 请求数据转化器注解
+     * 当前只支持在requestAdapter方法上标注，且必须标注
+     * 目的是将「请求数据」转化为「请求卡片」
+     * 请求数据转化适配器
      */
     @RequestDataAdapter
     @Override
@@ -356,10 +351,10 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
     }
   
   	/**
-  	 * @CallbackDataAdapter Feedback data converter notes
-  	 * Currently, only annotations on convertAdapter methods are supported
-  	 * The goal is to convert the format of remote/local feedback into the desired format
-     * Feedback results to the conversion adapter
+  	 * @CallbackDataAdapter 反馈数据转化器注解
+  	 * 当前只支持在convertAdapter方法上标注
+  	 * 目的是将 远程/本地 反馈的格式 转换为所需的格式
+     * 反馈结果转化适配器
      */
     @CallbackDataAdapter
     @Override
@@ -368,7 +363,7 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
     }
 
     /**
-     * Request a data transformation policy
+     * 请求数据转化策略
      */
     public static class LoginRequestBodyAdapter extends RequestBodyAdapter.Factory<LoginCard> {
 
@@ -386,17 +381,17 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
 }
 ```
 
-#### Step 3: Bind the request route
+#### 第三步：绑定请求路由
 
-Add a binding to the class that needs to use request routing
+在需要使用到请求路由的类中，添加绑定
 
 ```java
 public class MainViewModel implements MainViewModelComponent.OnCallbackListener {
 
   	/**
-     * @Request Annotate the request route to use
-     * The request responsibility composition class MainViewModelComponent for MainViewModel is automatically created at compile time
-     * The MainViewModelComponent performs the create and destroy actions for inversion of control.
+     * @Request 标注需要使用的请求路由
+     * 编译时会自动创建 MainViewModel 的 请求职责组合类 MainViewModelComponent
+     * 由MainViewModelComponent 来代为执行 创建和销毁 动作，达到控制反转目的。
      */
     @Request
     LoginRouter loginRouter;
@@ -404,18 +399,18 @@ public class MainViewModel implements MainViewModelComponent.OnCallbackListener 
     private IComponent component;
 
   	/**
-  	 * Constructor that calls MainViewModelComponent in the initial method
+  	 * 初始方法中调用 MainViewModelComponent的构造方法
   	 * Builder builder(AnnotationViewModel host, OnCallbackListener listener);
-     * IComponent create(AnnotationViewModel host, OnCallbackListener listener);
-     * new MainViewModelComponent.Builder()
-     * Binds the current class to the feedback listener interface
+		 * IComponent create(AnnotationViewModel host, OnCallbackListener listener);
+		 * new MainViewModelComponent.Builder()
+		 * 将当前类和反馈监听接口做绑定
   	 */
     public void initConfig() {
         component = MainViewModelComponent.create(this, this);
     }
 
   	/**
-  	 * destroy
+  	 * 销毁
   	 */
     public void onDestroy(){
       	component.onDestroy();
@@ -426,24 +421,24 @@ public class MainViewModel implements MainViewModelComponent.OnCallbackListener 
 
 
 
-### THREE, custom request strategy scheme
+### 三、自定义请求策略方案
 
-#### Step 1: on the original basis, add a policy dependency
+#### 第一步：在原有基础上，添加策略依赖
 
 ```groovy
 dependencies {
-        api 'com.github.Sheedon.RequestRouter:rrouter-core:lastVersion'
+			api 'com.github.Sheedon.RequestRouter:rrouter-core:lastVersion'
   		api 'com.github.Sheedon.RequestRouter:rrouter-strategy-support:lastVersion'
 }
 ```
 
-#### Step 2: Create a request policy handler
+#### 第二步：创建请求策略处理器
 
-Can inherit `BaseStrategyHandler` to construct the target strategy processing scheme.
+可继承 `BaseStrategyHandler` 来构建 目标策略处理方案。
 
 ```java
 /**
- * Basic strategy executor
+ * 基础策略执行者
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
@@ -453,12 +448,12 @@ public abstract class BaseStrategyHandler implements StrategyHandle {
 
 
     /**
-     * Processing request agent
+     * 处理请求代理
      *
-     * @param requestStrategies Request policy collection
-     * @param card              request card
-     * @param <RequestCard>     request card type
-     * @return Whether the processing is successful
+     * @param requestStrategies 请求策略集合
+     * @param card              请求卡片
+     * @param <RequestCard>     请求卡片
+     * @return 是否处理成功
      */
     @Override
     public <RequestCard> boolean handleRequestStrategy(ProcessChain processChain,
@@ -468,46 +463,46 @@ public abstract class BaseStrategyHandler implements StrategyHandle {
     }
 
     /**
-     * The real processing request agent
+     * 真实处理请求代理
      *
-     * @param progress          Request progress
-     * @param requestStrategies Request policy collection
-     * @param card              Request card
-     * @param callback          Callback listener
-     * @param <RequestCard>     Request card type
-     * @return Whether the call is successful
+     * @param progress          请求进度
+     * @param requestStrategies 请求策略集合
+     * @param card              请求卡片
+     * @param callback          反馈监听器
+     * @param <RequestCard>     请求卡片类型
+     * @return 是否调用成功
      */
     protected <RequestCard> boolean handleRealRequestStrategy(ProcessChain processChain,
                                                               SparseArray<Request<RequestCard>> requestStrategies,
                                                               RequestCard card) {
-        // Get the request corresponding to the current progress
+        // 拿到当前进度对应的请求
         Request<RequestCard> request = requestStrategies.get(processChain.getProcess());
-        // The request does not exist, the request fails
+        // 请求不存在，则请求失败
         if (request == null) {
             processChain.updateCurrentStatus(ProcessChain.STATUS_COMPLETED);
             return false;
         }
 
-        // If the status is not Unsent, the request fails
+        // 状态并非「未发送」，则请求失败
         if (processChain.getCurrentStatus() != ProcessChain.STATUS_NORMAL) {
             processChain.updateCurrentStatus(ProcessChain.STATUS_COMPLETED);
             return false;
         }
 
-        // Request task
+        // 请求任务
         processChain.updateCurrentStatus(ProcessChain.STATUS_REQUESTING);
         request.request(card);
         return true;
     }
 
     /**
-     * Processing callback Agent
+     * 处理反馈代理
      *
-     * @param callback        callback listener
-     * @param message         message
-     * @param isSuccess       callback successful
-     * @param <ResponseModel> Response model type
-     * @return Whether the processing is successful
+     * @param callback        反馈监听
+     * @param message         描述信息
+     * @param isSuccess       是否请求成功
+     * @param <ResponseModel> 结果model类型
+     * @return 是否处理成功
      */
     @Override
     public <ResponseModel> boolean handleCallbackStrategy(ProcessChain processChain,
@@ -516,31 +511,31 @@ public abstract class BaseStrategyHandler implements StrategyHandle {
                                                           String message,
                                                           boolean isSuccess) {
 
-        // The current status has been completed, no additional callback processing
+        // 当前状态已完成，不做额外反馈处理
         if (processChain.getCurrentStatus() == ProcessChain.STATUS_COMPLETED) {
             return false;
         }
 
-        // The current state is the default, which means that the process is wrong and will not be executed
+        // 当前状态是默认，意味着流程错误，不往下执行
         if (processChain.getCurrentStatus() == ProcessChain.STATUS_NORMAL) {
             return false;
         }
 
-        // Real execution
+        // 真实执行
         return handleRealCallbackStrategy(processChain, callback,
                 model, message, isSuccess);
     }
 
     /**
-     * Real handling of callback agents
+     * 真实处理反馈代理
      *
-     * @param processChain    Process chain
-     * @param callback        Feedback monitoring
-     * @param model           model
-     * @param message         Description
-     * @param isSuccess       callback successful
-     * @param <ResponseModel> Response model type
-     * @return Whether the processing is successful
+     * @param processChain    流程链
+     * @param callback        反馈监听
+     * @param model           数据
+     * @param message         描述信息
+     * @param isSuccess       是否请求成功
+     * @param <ResponseModel> 反馈model类型
+     * @return 是否处理成功
      */
     protected <ResponseModel>
     boolean handleRealCallbackStrategy(ProcessChain processChain,
@@ -560,13 +555,13 @@ public abstract class BaseStrategyHandler implements StrategyHandle {
     }
 
     /**
-     * Processing callback results
+     * 处理反馈结果
      *
-     * @param callback        callback listener
-     * @param model           response model
-     * @param message         message
-     * @param isSuccess       callback successful
-     * @param <ResponseModel> response model type
+     * @param callback        反馈监听器
+     * @param model           反馈Model
+     * @param message         描述信息
+     * @param isSuccess       是否为成功数据反馈
+     * @param <ResponseModel> 反馈数据类型
      */
     protected <ResponseModel> void handleCallback(DataSource.Callback<ResponseModel> callback,
                                                   ResponseModel model, String message,
