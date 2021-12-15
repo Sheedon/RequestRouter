@@ -2,7 +2,7 @@
 ```tex
 一个用于帮助 Android App 进行请求行为策略化改造的框架。
 ```
-[English]: https://github.com/Sheedon/RequestRouter/blob/master/README.md	"Englist"
+[English](https://github.com/Sheedon/RequestRouter/blob/master/README.md)
 
 借由请求代理，将请求动作按照策略配置，按需按序调用，简化多种请求方式造成的逻辑复杂度。
 

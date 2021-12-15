@@ -2,7 +2,8 @@
 ```tex
 A framework for helping Android App to strategically transform request behavior.
 ```
-[中文文档]: https://github.com/Sheedon/RequestRouter/blob/master/README_CN.md	"中文文档"
+
+[中文文档](https://github.com/Sheedon/RequestRouter/blob/master/README_CN.md)
 
 With the request agent, the request action is configured according to the strategy and called in order as needed, simplifying the logic complexity caused by multiple request methods.
 
