@@ -1,11 +1,11 @@
 package org.sheedon.rrouter.compiler.model.holder;
 
+import org.sheedon.compilationtool.retrieval.core.RetrievalClassModel;
 import org.sheedon.rrouter.compiler.handler.search.strategies.RRGenericsRecord;
 import org.sheedon.rrouter.compiler.model.MethodInfoModel;
 import org.sheedon.rrouter.compiler.model.ParameterGroupModel;
 import org.sheedon.rrouter.compiler.model.ParameterModel;
 import org.sheedon.rrouter.compiler.model.ParameterSparseArray;
-import org.sheedon.rrouter.compiler.model.RetrievalClassModel;
 import org.sheedon.rrouter.facade.annotation.RRouter;
 import org.sheedon.rrouter.strategy.support.AbstractRequestStrategy;
 

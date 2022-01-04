@@ -4,12 +4,10 @@ plugins {
 
 dependencies {
     implementation 'com.squareup:javapoet:1.13.0'
+    implementation 'com.github.Sheedon:CompilationTool:0.1.1-SNAPSHOT'
 
     implementation project(':rrouter-annotation')
-    implementation 'io.reactivex.rxjava3:rxjava:3.0.12'
     implementation project(':rrouter-strategy-support')
-
-    implementation 'io.reactivex.rxjava3:rxjava:3.0.12'
 
     //noinspection AnnotationProcessorOnCompilePath
     implementation 'com.google.auto.service:auto-service:1.0.1'

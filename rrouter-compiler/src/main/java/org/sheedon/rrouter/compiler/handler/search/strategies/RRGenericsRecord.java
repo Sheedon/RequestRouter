@@ -1,6 +1,6 @@
 package org.sheedon.rrouter.compiler.handler.search.strategies;
 
-import org.sheedon.rrouter.compiler.handler.search.strategies.center.IGenericsRecord;
+import org.sheedon.compilationtool.retrieval.core.IGenericsRecord;
 
 import java.util.Objects;
 

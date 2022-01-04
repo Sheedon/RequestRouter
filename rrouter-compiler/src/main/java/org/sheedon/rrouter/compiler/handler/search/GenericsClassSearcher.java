@@ -1,8 +1,9 @@
 package org.sheedon.rrouter.compiler.handler.search;
 
-import org.sheedon.rrouter.compiler.model.RetrievalClassModel;
-import org.sheedon.rrouter.compiler.handler.search.strategies.RequestRouterClassSearcher;
-import org.sheedon.rrouter.compiler.handler.search.strategies.center.ISearch;
+import org.sheedon.compilationtool.retrieval.ClassGenericsRetrieval;
+import org.sheedon.compilationtool.retrieval.core.ISearch;
+import org.sheedon.compilationtool.retrieval.core.RetrievalClassModel;
+import org.sheedon.rrouter.compiler.handler.search.strategies.RRGenericsRetrievalStrategy;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,9 @@ public class GenericsClassSearcher {
     // 搜索map
     private final Map<String, ISearch> searchMap = new HashMap<String, ISearch>() {
         {
-            put(RequestRouterClassSearcher.class.getCanonicalName(), new RequestRouterClassSearcher());
+            RRGenericsRetrievalStrategy strategy = new RRGenericsRetrievalStrategy();
+            // 创建泛型类检索者
+            put(ClassGenericsRetrieval.class.getCanonicalName(), new ClassGenericsRetrieval(strategy));
         }
     };
 
@@ -52,7 +55,7 @@ public class GenericsClassSearcher {
         }
 
         ISearch search = searchMap.get(cls.getCanonicalName());
-        return search.searchClassGenerics(element, types, messager);
+        return search.searchGenerics(element, types);
     }
 
 }

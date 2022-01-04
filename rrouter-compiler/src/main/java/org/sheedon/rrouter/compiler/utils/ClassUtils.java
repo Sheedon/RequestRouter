@@ -4,8 +4,6 @@ import com.squareup.javapoet.ClassName;
 
 import org.sheedon.rrouter.compiler.Contract;
 
-import java.util.Locale;
-
 /**
  * 类处理工具
  *

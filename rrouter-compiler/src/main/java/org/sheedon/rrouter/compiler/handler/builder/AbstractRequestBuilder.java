@@ -23,8 +23,6 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
-import io.reactivex.rxjava3.core.Observable;
-
 /**
  * 抽象请求策略构造器
  *
@@ -162,7 +160,8 @@ public abstract class AbstractRequestBuilder {
         // 反馈结果
         ParameterizedTypeName rsp = ParameterizedTypeName.get(ClassName.get(IRspModel.class),
                 genericsClass[1]);
-        ParameterizedTypeName observable = ParameterizedTypeName.get(ClassName.get(Observable.class), rsp);
+        ParameterizedTypeName observable = ParameterizedTypeName.get(
+                ClassName.bestGuess(Contract.OBSERVABLE_RXJAVA), rsp);
 
         // 请求字段
         ClassName requestCard = genericsClass[0];

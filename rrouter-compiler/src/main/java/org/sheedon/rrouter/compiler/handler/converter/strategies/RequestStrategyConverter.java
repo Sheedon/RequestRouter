@@ -20,8 +20,6 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
-import io.reactivex.rxjava3.core.Observable;
-
 /**
  * 请求策略转化器
  * 将 请求策略类的方法元素（ExecutableElement）解析 转化为 方法信息模型（MethodInfoModel）
@@ -42,8 +40,6 @@ public class RequestStrategyConverter extends AbstractConverter<ExecutableElemen
     private static final String LOCAL_REQUEST_CLASS = "localRequestClass";
     // 本地请求方法
     private static final String ON_LOAD_LOCAL_METHOD = "onLoadLocalMethod";
-    // Observable类
-    private static final String OBSERVABLE = Observable.class.getCanonicalName();
 
     // 请求策略Class类型记录
     private static final Map<String, Boolean> requestStrategyClassMap = new HashMap<>();
@@ -79,7 +75,7 @@ public class RequestStrategyConverter extends AbstractConverter<ExecutableElemen
         TypeElement returnElement = (TypeElement) types.asElement(element.getReturnType());
         String returnMethodName = returnElement.getQualifiedName().toString();
         // Observable 类
-        if (returnMethodName.equals(OBSERVABLE)) {
+        if (returnMethodName.equals(Contract.OBSERVABLE_RXJAVA)) {
             return checkRequestMethod(element);
         }
 

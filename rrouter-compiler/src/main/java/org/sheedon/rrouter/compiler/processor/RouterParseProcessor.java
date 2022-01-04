@@ -1,12 +1,12 @@
 package org.sheedon.rrouter.compiler.processor;
 
+import org.sheedon.compilationtool.retrieval.ClassGenericsRetrieval;
+import org.sheedon.compilationtool.retrieval.core.RetrievalClassModel;
 import org.sheedon.rrouter.compiler.Contract;
 import org.sheedon.rrouter.compiler.handler.converter.RRouterConverter;
 import org.sheedon.rrouter.compiler.model.MethodInfoModel;
 import org.sheedon.rrouter.compiler.handler.search.GenericsClassSearcher;
-import org.sheedon.rrouter.compiler.handler.search.strategies.RequestRouterClassSearcher;
 import org.sheedon.rrouter.compiler.model.ParameterSparseArray;
-import org.sheedon.rrouter.compiler.model.RetrievalClassModel;
 import org.sheedon.rrouter.compiler.model.holder.RouterHoldClass;
 import org.sheedon.rrouter.facade.annotation.CallbackDataAdapter;
 import org.sheedon.rrouter.facade.annotation.Provider;
@@ -118,7 +118,7 @@ public class RouterParseProcessor {
             superclassName = typeElement.getQualifiedName().toString();
             // 检索 RequestRouter 的路由信息
             retrievalClassModel = GenericsClassSearcher.getInstance().searchClassRequestRouterGenerics(element,
-                    mTypeUtils, mMessager, RequestRouterClassSearcher.class);
+                    mTypeUtils, mMessager, ClassGenericsRetrieval.class);
         }
 
         // 构造路由持有类
@@ -229,9 +229,6 @@ public class RouterParseProcessor {
      * {@link CallbackDataAdapter}
      * 0. 不可重复
      * 1. 当前存在则取当前的值,当前不存在,取父类信息,都不存在,则不填充
-     * <p>
-     *
-     * @return 是否元素有误
      */
     private void checkAndRecordInnerElement(TypeElement element, RouterHoldClass holdClass) {
         if (holdClass.isCompleted()) {

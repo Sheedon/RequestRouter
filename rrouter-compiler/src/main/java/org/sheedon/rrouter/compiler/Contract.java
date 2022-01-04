@@ -43,5 +43,7 @@ public interface Contract {
     String REMOTE_REQUEST = "RemoteRequest";
     // 本地请求
     String LOCAL_REQUEST = "LocalRequest";
+    // Observable
+    String OBSERVABLE_RXJAVA = "io.reactivex.rxjava3.core.Observable";
 
 }
