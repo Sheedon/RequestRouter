@@ -14,6 +14,7 @@ import org.sheedon.rrouter.facade.annotation.RequestStrategy;
 import org.sheedon.rrouter.facade.model.Converter;
 import org.sheedon.rrouter.facade.model.RequestBodyAdapter;
 import org.sheedon.rrouter.facade.router.AbstractRequestRouter;
+import org.sheedon.rrouter.facade.router.IResponseDispatcher;
 import org.sheedon.rrouter.strategy.model.IRspModel;
 import org.sheedon.rrouter.strategy.parameter.DefaultStrategy;
 import org.sheedon.rrouter.strategy.support.AbstractRequestStrategy;
@@ -50,8 +51,9 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
 
     /**
      * 远程请求方法
+     *
      * @param loginCard 请求卡片
-     * @return Observable<IRspModel<LoginModel>>
+     * @return Observable<IRspModel < LoginModel>>
      */
     @RequestStrategy
     @Override
@@ -62,6 +64,7 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
 
     /**
      * 远程请求类
+     *
      * @param callback 回调绑定
      * @return AbstractRequestStrategy<LoginCard, LoginModel>
      */
@@ -87,6 +90,11 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
     @Override
     public LoginRequestBodyAdapter requestAdapter() {
         return new LoginRequestBodyAdapter();
+    }
+
+    @Override
+    public IResponseDispatcher<LoginModel> dispatcher() {
+        return loginModel -> System.out.println(loginModel.toString());
     }
 
     /**

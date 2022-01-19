@@ -218,8 +218,8 @@ public class ComponentBuilder {
                     routerField, routerField, fieldName, routerField);
         }
 
-        builder.addStatement("this.$N = $N.$N",Contract.LISTENER,
-                fieldName,Contract.LISTENER);
+        builder.addStatement("this.$N = $N.$N", Contract.LISTENER,
+                fieldName, Contract.LISTENER);
 
         builder.addStatement("attachListener()");
 
@@ -269,7 +269,7 @@ public class ComponentBuilder {
                                            RouterWrapperModel wrapperModel) {
         TypeSpec listenerTypeSpec = wrapperModel.getListenerTypeSpec();
         if (listenerTypeSpec == null) {
-            listenerTypeSpec = buildRealListener(wrapperModel);
+            listenerTypeSpec = buildRealListener(wrapperModel, routerFieldName);
         }
 
         return MethodSpec.methodBuilder(methodName)
@@ -288,7 +288,7 @@ public class ComponentBuilder {
      * @param wrapperModel 包装类
      * @return TypeSpec
      */
-    private TypeSpec buildRealListener(RouterWrapperModel wrapperModel) {
+    private TypeSpec buildRealListener(RouterWrapperModel wrapperModel, String routerFieldName) {
         String listenerCanonicalName
                 = wrapperModel.getClassName().canonicalName()
                 + Contract.POINT
@@ -312,6 +312,9 @@ public class ComponentBuilder {
                         , "result")
                         .build())
                 .addStatement("if(listener == null) return")
+                .beginControlFlow("if($N.dispatcher() != null)",routerFieldName)
+                .addStatement("$N.dispatcher().dispatchResponse(result)",routerFieldName)
+                .endControlFlow()
                 .addStatement("listener.$N(result)", wrapperModel.getInterfaceMethodName());
 
         innerMethods.add(dataLoadedBuilder.build());
