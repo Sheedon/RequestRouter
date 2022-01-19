@@ -131,6 +131,14 @@ public class AbstractRequestRouter<RequestCard, ResponseModel> {
     }
 
     /**
+     * Response result handler, operate and process data uniformly in the routing class,
+     * so as not to repeatedly write consistent logic in all objects that hold the routing class
+     */
+    public IResponseDispatcher<ResponseModel> dispatcher() {
+        return null;
+    }
+
+    /**
      * destroy request action
      */
     public void onDestroy() {
