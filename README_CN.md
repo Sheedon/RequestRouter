@@ -578,3 +578,26 @@ public abstract class BaseStrategyHandler implements StrategyHandle {
 }
 ```
 
+
+
+### 四、注意
+
+使用「进阶版」注解操作时，因为引入的监听器是编译时生成，当重新编译若是 `build clean` 则会找不到监听器的类，从而无法继续编译，实现方式是将「Android Studio」中改为**覆盖式编译**。
+
+#### 1. 打开配置：
+
+![config1](https://github.com/Sheedon/RequestRouter/blob/master/image/config1.png?raw=true)
+
+#### 2. 配置
+
+![config2](https://github.com/Sheedon/RequestRouter/blob/master/image/config2.png?raw=true)
+
+#### 3. 设置Run Gradle task
+
+![config3](https://github.com/Sheedon/RequestRouter/blob/master/image/config3.png?raw=true)
+
+#### 4. 输入insallDebug
+
+![config4](https://github.com/Sheedon/RequestRouter/blob/master/image/config4.png?raw=true)
+
+#### 5. 再编译运行即可

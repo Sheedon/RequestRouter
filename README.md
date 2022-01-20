@@ -1,15 +1,15 @@
 # RequestRouter
+
 ```tex
 A framework for helping Android App to strategically transform request behavior.
 ```
 
 [中文文档](https://github.com/Sheedon/RequestRouter/blob/master/README_CN.md)
 
-With the request agent, the request action is configured according to the strategy and called in order as needed, simplifying the logic complexity caused by multiple request methods.
+With the request agent, the request action is configured according to the strategy and called in
+order as needed, simplifying the logic complexity caused by multiple request methods.
 
 ![请求路由](https://raw.githubusercontent.com/Sheedon/RequestRouter/82e73f4d32c3f820f8942f77c7fc6ad5feba2288/image/%E8%AF%B7%E6%B1%82%E8%B7%AF%E7%94%B1.svg)
-
-
 
 ### ONE、How to use
 
@@ -24,8 +24,6 @@ allprojects {
 }
 ```
 
-
-
 #### Step 2: Add core dependencies
 
 ```groovy
@@ -36,43 +34,44 @@ dependencies {
 }
 ```
 
-`rrouter-core` , Request routing core package, mainly responsible for proxy execution of request strategy.
+`rrouter-core` , Request routing core package, mainly responsible for proxy execution of request
+strategy.
 
-The request agent, through the request behavior provided by the client, forwards and requests the policy executor according to the configured scheduling policy, and executes the scheduling plan on its behalf, and after the scheduling result is obtained, the feedback listener provided by the client responds to the client.
+The request agent, through the request behavior provided by the client, forwards and requests the
+policy executor according to the configured scheduling policy, and executes the scheduling plan on
+its behalf, and after the scheduling result is obtained, the feedback listener provided by the
+client responds to the client.
 
 `rrouter-strategy`, Local request + remote request strategy package.
 
-The configured policies include: 
-1. Single remote request 
-2. Single local request 
-3. Priority remote request, failed to take local request 
-4. Priority local request, failed to take remote request 
+The configured policies include:
+
+1. Single remote request
+2. Single local request
+3. Priority remote request, failed to take local request
+4. Priority local request, failed to take remote request
 5. Parallel remote local request
-
-
 
 #### Step 3: Initialize SKD
 
 ```java
 // Configure the default (remote and local) execution plan by configuring the warehouse
 // 1⃣ 2⃣ 3⃣ You can choose any one
-ConfigRepository repository = new ConfigRepository.Builder()
-                .factory(new StrategyHandle.Factory())// 1⃣ Add strategy handle factory
-                .strategyArray(StrategyConfig.strategyHandlerArray)// 2⃣ Populates the policy execution collection
-                .strategyHandler(new StrategyHandle.ResponsibilityFactory())// 3⃣ Bind the policy executor
-                .build();
+ConfigRepository repository=new ConfigRepository.Builder()
+        .factory(new StrategyHandle.Factory())// 1⃣ Add strategy handle factory
+        .strategyArray(StrategyConfig.strategyHandlerArray)// 2⃣ Populates the policy execution collection
+        .strategyHandler(new StrategyHandle.ResponsibilityFactory())// 3⃣ Bind the policy executor
+        .build();
 // Initial setup scheme
-RRouter.setUp(mApplication, repository);// As early as possible, it is recommended to initialize in Application
+        RRouter.setUp(mApplication,repository);// As early as possible, it is recommended to initialize in Application
 ```
-
-
 
 #### Step 4: Build the request
 
 ##### Business request
 
 ```java
-public class LoginRequest  {
+public class LoginRequest {
 
     // Callback listener
     protected DataSource.Callback<LoginModel> callback;
@@ -179,7 +178,7 @@ public class LoginRemoteRequest extends AbstractRemoteRequestStrategy<LoginCard,
         super(callback);
     }
 
-  	// Actually use rxjava + retrofit 
+    // Actually use rxjava + retrofit 
     @Override
     protected Observable<IRspModel<LoginModel>> onLoadMethod(LoginCard loginCard) {
         return Observable.just(RspModel.buildToSuccess(LoginModel.build()));
@@ -213,7 +212,7 @@ public class LoginLocalRequest extends AbstractLocalRequestStrategy<LoginCard, L
 #### Binding use
 
 ```java
-public class MainViewModel{
+public class MainViewModel {
 
     private LoginRequest loginRequest;
 
@@ -233,12 +232,12 @@ public class MainViewModel{
             loginRequest = new LoginRequest(new DataSource.Callback<LoginModel>() {
                 @Override
                 public void onDataNotAvailable(String message) {
-                    Log.v(TAG,message);
+                    Log.v(TAG, message);
                 }
 
                 @Override
                 public void onDataLoaded(LoginModel loginModel) {
-                    Log.v(TAG,"user: " + loginModel.getAccessToken());
+                    Log.v(TAG, "user: " + loginModel.getAccessToken());
                 }
             });
         }
@@ -254,13 +253,11 @@ public class MainViewModel{
 }
 ```
 
-
-
 ### TWO、Advanced version
 
-Simplified support for the provided `strategy library`. 
-We use `notes` here to help users generate target template code during the compilation phase, 
-so that users only need to consider core business writing.
+Simplified support for the provided `strategy library`. We use `notes` here to help users generate
+target template code during the compilation phase, so that users only need to consider core business
+writing.
 
 #### Step 1: On the original basis, add a policy dependency
 
@@ -310,9 +307,9 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
      * you can also customize the implementation by adding a requestStrategy field in the annotation to indicate the invocation request type.
      *
      * Remote request method
-     * 
+     *
      * @param loginCard Request card
-     * @return Observable<IRspModel<LoginModel>>
+     * @return Observable<IRspModel < LoginModel>>
      */
     @RequestStrategy
     @Override
@@ -320,7 +317,7 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
         return Observable.just(new Random().nextBoolean() ? RspModel.buildToSuccess(LoginModel.build())
                 : RspModel.buildToFailure("Network request failed"));
     }
-  
+
     /**
      * If the on Load Remote Method has been used and the @Request Strategy annotation has been marked, 
      * @Request Strategy cannot be added to the current method
@@ -348,7 +345,7 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
      * @RequestDataAdapter Request data converter annotation
      * Currently, annotations are only supported on requestAdapter methods and must be
      * The goal is to convert "request data" into "request cards"
-     * 
+     *
      * Request the data conversion adapter
      */
     @RequestDataAdapter
@@ -356,11 +353,11 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
     public LoginRequestBodyAdapter requestAdapter() {
         return new LoginRequestBodyAdapter();
     }
-  
-  	/**
-  	 * @CallbackDataAdapter Feedback data converter notes
-  	 * Currently, only annotations on convertAdapter methods are supported
-  	 * The goal is to convert the format of remote/local feedback into the desired format
+
+    /**
+     * @CallbackDataAdapter Feedback data converter notes
+     * Currently, only annotations on convertAdapter methods are supported
+     * The goal is to convert the format of remote/local feedback into the desired format
      * Feedback results to the conversion adapter
      */
     @CallbackDataAdapter
@@ -395,7 +392,7 @@ Add a binding to the class that needs to use request routing
 ```java
 public class MainViewModel implements MainViewModelComponent.OnCallbackListener {
 
-  	/**
+    /**
      * @Request Annotate the request route to use
      * The request responsibility composition class MainViewModelComponent for MainViewModel is automatically created at compile time
      * The MainViewModelComponent performs the create and destroy actions for inversion of control.
@@ -405,28 +402,26 @@ public class MainViewModel implements MainViewModelComponent.OnCallbackListener 
 
     private IComponent component;
 
-  	/**
-  	 * Constructor that calls MainViewModelComponent in the initial method
-  	 * Builder builder(AnnotationViewModel host, OnCallbackListener listener);
+    /**
+     * Constructor that calls MainViewModelComponent in the initial method
+     * Builder builder(AnnotationViewModel host, OnCallbackListener listener);
      * IComponent create(AnnotationViewModel host, OnCallbackListener listener);
      * new MainViewModelComponent.Builder()
      * Binds the current class to the feedback listener interface
-  	 */
+     */
     public void initConfig() {
         component = MainViewModelComponent.create(this, this);
     }
 
-  	/**
-  	 * destroy
-  	 */
-    public void onDestroy(){
-      	component.onDestroy();
+    /**
+     * destroy
+     */
+    public void onDestroy() {
+        component.onDestroy();
     }
-    
+
 }
 ```
-
-
 
 ### THREE, custom request strategy scheme
 
@@ -583,4 +578,32 @@ public abstract class BaseStrategyHandler implements StrategyHandle {
     }
 }
 ```
+
+### FOUR、NOTE
+
+When using the "advanced version" annotation operation, because the imported listener is generated
+at compile time, if the recompile is `build clean`, the class of the listener cannot be found, so
+the compilation cannot be continued. " to overwrite compilation.
+
+#### 1. Open configuration：
+
+![config1](https://github.com/Sheedon/RequestRouter/blob/master/image/config1.png?raw=true)
+
+#### 2. Configure
+
+![config2](https://github.com/Sheedon/RequestRouter/blob/master/image/config2.png?raw=true)
+
+#### 3. Set up Run Gradle task
+
+![config3](https://github.com/Sheedon/RequestRouter/blob/master/image/config3.png?raw=true)
+
+#### 4. Input installDebug
+
+![config4](https://github.com/Sheedon/RequestRouter/blob/master/image/config4.png?raw=true)
+
+#### 5. Compile and run again
+
+
+
+
 
