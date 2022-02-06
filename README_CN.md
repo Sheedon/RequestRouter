@@ -2,7 +2,7 @@
 ```tex
 一个用于帮助 Android App 进行请求行为策略化改造的框架。
 ```
-[English](https://github.com/Sheedon/RequestRouter/blob/master/README.md)
+[English](README.md)
 
 借由请求代理，将请求动作按照策略配置，按需按序调用，简化多种请求方式造成的逻辑复杂度。
 
@@ -601,3 +601,24 @@ public abstract class BaseStrategyHandler implements StrategyHandle {
 ![config4](https://github.com/Sheedon/RequestRouter/blob/master/image/config4.png?raw=true)
 
 #### 5. 再编译运行即可
+
+### 五、LICENSE
+
+[LICENSE](LICENSE)
+
+```tex
+Copyright 2022 Sheedon.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
