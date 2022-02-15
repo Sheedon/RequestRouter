@@ -17,7 +17,7 @@ package org.sheedon.rrouter.strategy.support;
 
 import org.sheedon.rrouter.core.support.Request;
 import org.sheedon.rrouter.core.support.StrategyCallback;
-import org.sheedon.rrouter.strategy.model.IRspModel;
+import org.sheedon.rrouter.core.support.IRspModel;
 
 import io.reactivex.rxjava3.core.Observable;
 

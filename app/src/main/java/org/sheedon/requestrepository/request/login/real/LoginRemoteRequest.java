@@ -2,12 +2,10 @@ package org.sheedon.requestrepository.request.login.real;
 
 import org.sheedon.rrouter.AbstractRemoteRequestStrategy;
 import org.sheedon.rrouter.core.support.StrategyCallback;
-import org.sheedon.rrouter.strategy.model.IRspModel;
+import org.sheedon.rrouter.core.support.IRspModel;
 import org.sheedon.requestrepository.RspModel;
 import org.sheedon.requestrepository.data.card.LoginCard;
 import org.sheedon.requestrepository.data.model.LoginModel;
-
-import java.util.Random;
 
 import io.reactivex.rxjava3.core.Observable;
 

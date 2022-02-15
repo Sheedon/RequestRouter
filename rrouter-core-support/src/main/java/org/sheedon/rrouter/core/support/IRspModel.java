@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter.strategy.model;
+package org.sheedon.rrouter.core.support;
 
 /**
  * 基础数据结果反馈接收接口

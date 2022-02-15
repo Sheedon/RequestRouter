@@ -19,7 +19,7 @@ import org.sheedon.rrouter.core.support.StrategyCallback;
 import org.sheedon.rrouter.facade.annotation.Provider;
 import org.sheedon.rrouter.facade.model.Converter;
 import org.sheedon.rrouter.facade.model.RequestBodyAdapter;
-import org.sheedon.rrouter.strategy.model.IRspModel;
+import org.sheedon.rrouter.core.support.IRspModel;
 import org.sheedon.rrouter.strategy.parameter.DefaultStrategy;
 import org.sheedon.rrouter.strategy.support.AbstractRequestStrategy;
 

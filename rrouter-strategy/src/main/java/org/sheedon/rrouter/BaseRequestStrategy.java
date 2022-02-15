@@ -17,7 +17,7 @@ package org.sheedon.rrouter;
 
 import android.content.Context;
 
-import org.sheedon.rrouter.core.support.Request;
+import org.sheedon.rrouter.core.support.IRspModel;
 import org.sheedon.rrouter.core.support.StrategyCallback;
 import org.sheedon.rrouter.strategy.support.AbstractRequestStrategy;
 
@@ -33,14 +33,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * @Date: 2021/7/18 11:33 上午
  */
 public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
-        extends AbstractRequestStrategy<RequestCard, ResponseModel>{
+        extends AbstractRequestStrategy<RequestCard, ResponseModel> {
 
     private Disposable disposable;
     private Context context;
+    private Converter<IRspModel<?>, Boolean> factory;
 
     public BaseRequestStrategy(StrategyCallback<ResponseModel> callback) {
         super(callback);
         this.context = RRouter.getInstance().getContext();
+        this.factory = RRouter.getInstance().getRspConverter();
     }
 
     /**
@@ -66,7 +68,7 @@ public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
                         return;
                     }
 
-                    if (rspModel.isSuccess()) {
+                    if (factory.convert(rspModel)) {
                         callback.onDataLoaded(rspModel.getData());
                         return;
                     }
@@ -104,6 +106,7 @@ public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
     @Override
     public void onDestroy() {
         callback = null;
+        factory = null;
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }

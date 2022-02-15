@@ -3,7 +3,7 @@ package org.sheedon.requestrepository.request.login.real;
 import org.sheedon.requestrepository.RspModel;
 import org.sheedon.rrouter.AbstractLocalRequestStrategy;
 import org.sheedon.rrouter.core.support.StrategyCallback;
-import org.sheedon.rrouter.strategy.model.IRspModel;
+import org.sheedon.rrouter.core.support.IRspModel;
 import org.sheedon.requestrepository.data.card.LoginCard;
 import org.sheedon.requestrepository.data.model.LoginModel;
 

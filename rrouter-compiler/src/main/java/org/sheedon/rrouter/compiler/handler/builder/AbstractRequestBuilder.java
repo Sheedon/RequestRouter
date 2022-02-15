@@ -26,7 +26,7 @@ import org.sheedon.rrouter.compiler.Contract;
 import org.sheedon.rrouter.compiler.model.holder.RouterHoldClass;
 import org.sheedon.rrouter.compiler.utils.ClassUtils;
 import org.sheedon.rrouter.core.support.StrategyCallback;
-import org.sheedon.rrouter.strategy.model.IRspModel;
+import org.sheedon.rrouter.core.support.IRspModel;
 
 import java.io.IOException;
 import java.util.ArrayList;

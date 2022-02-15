@@ -17,6 +17,8 @@ package org.sheedon.rrouter;
 
 import android.app.Application;
 
+import org.sheedon.rrouter.core.support.IRspModel;
+
 import java.util.Objects;
 
 /**
@@ -64,5 +66,9 @@ public class RRouter {
 
     ConfigRepository getConfigRepository() {
         return Objects.requireNonNull(configRepository, "please RRouter initialize first");
+    }
+
+    Converter<IRspModel<?>, Boolean> getRspConverter() {
+        return Objects.requireNonNull(configRepository.getRspConverter(), "please RRouter initialize first");
     }
 }

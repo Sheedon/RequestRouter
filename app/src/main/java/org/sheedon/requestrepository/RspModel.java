@@ -1,6 +1,6 @@
 package org.sheedon.requestrepository;
 
-import org.sheedon.rrouter.strategy.model.IRspModel;
+import org.sheedon.rrouter.core.support.IRspModel;
 
 /**
  * 反馈实现

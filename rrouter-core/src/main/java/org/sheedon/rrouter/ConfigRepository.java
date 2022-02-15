@@ -17,6 +17,8 @@ package org.sheedon.rrouter;
 
 import android.util.SparseArray;
 
+import org.sheedon.rrouter.core.support.IRspModel;
+
 import java.util.Objects;
 
 /**
@@ -30,19 +32,25 @@ public class ConfigRepository {
 
     // 组策略执行者
     private final StrategyHandle.Responsibilities strategyHandler;
+    private final Converter<IRspModel<?>, Boolean> rspConverter;
 
     private ConfigRepository(Builder builder) {
         strategyHandler = builder.strategyHandler;
+        rspConverter = builder.rspConverter.createCheckConverter();
     }
 
     StrategyHandle.Responsibilities getStrategyHandler() {
         return strategyHandler;
     }
 
+    public Converter<IRspModel<?>, Boolean> getRspConverter() {
+        return rspConverter;
+    }
+
     /**
      * 构建者类中获取
      */
-    private static StrategyHandle.ResponsibilityFactory getDefaultHandler(){
+    private static StrategyHandle.ResponsibilityFactory getDefaultHandler() {
         if (RRouter.isInstalled()) {
             throw new RuntimeException("Please do not repeat settings");
         }
@@ -57,6 +65,8 @@ public class ConfigRepository {
         private StrategyHandle.Factory factory;
         // 请求类型策略处理集合
         private SparseArray<StrategyHandle> strategyArray;
+        // 默认结果核实转换器
+        private Converter.Factory rspConverter;
 
         public Builder() {
 
@@ -100,12 +110,26 @@ public class ConfigRepository {
             return this;
         }
 
+        /**
+         * 请求类型策略处理集合
+         *
+         * @param factory 请求类型策略处理集合
+         * @return Builder
+         */
+        public Builder rspConverter(Converter.Factory rspConverter) {
+            this.rspConverter = Objects.requireNonNull(rspConverter, "rspConverter == null");
+            return this;
+        }
+
 
         /**
          * 策略执行者/请求策略工厂类/请求类型策略处理集合 只要有一个不为空
          * 使用优先级：策略执行者 > 请求策略工厂类 > 请求类型策略处理集合
          */
         public ConfigRepository build() {
+            if (rspConverter == null) {
+                rspConverter = new DefaultRspConverter();
+            }
             // 不为空，则直接使用即可
             if (strategyHandler != null) {
                 return new ConfigRepository(this);

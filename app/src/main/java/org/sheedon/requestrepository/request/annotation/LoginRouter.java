@@ -6,16 +6,14 @@ import org.sheedon.requestrepository.data.model.LoginModel;
 import org.sheedon.requestrepository.request.login.real.LoginLocalRequest;
 import org.sheedon.requestrepository.request.login.real.LoginRemoteRequest;
 import org.sheedon.rrouter.core.support.StrategyCallback;
-import org.sheedon.rrouter.facade.annotation.CallbackDataAdapter;
 import org.sheedon.rrouter.facade.annotation.Provider;
 import org.sheedon.rrouter.facade.annotation.RRouter;
 import org.sheedon.rrouter.facade.annotation.RequestDataAdapter;
 import org.sheedon.rrouter.facade.annotation.RequestStrategy;
-import org.sheedon.rrouter.facade.model.Converter;
 import org.sheedon.rrouter.facade.model.RequestBodyAdapter;
 import org.sheedon.rrouter.facade.router.AbstractRequestRouter;
 import org.sheedon.rrouter.facade.router.IResponseDispatcher;
-import org.sheedon.rrouter.strategy.model.IRspModel;
+import org.sheedon.rrouter.core.support.IRspModel;
 import org.sheedon.rrouter.strategy.parameter.DefaultStrategy;
 import org.sheedon.rrouter.strategy.support.AbstractRequestStrategy;
 
