@@ -279,12 +279,12 @@ public class RouterParseProcessor {
 
         // 当前类没有设置远程请求类策略
         if (holdClass.hasNotRemoteRequestStrategy()) {
-            holdClass.addRemoteRequest(findRequestStrategy(element, true), mMessager, element, isContain);
+            holdClass.addRemoteRequest(findRequestStrategy(element, true), mMessager, element, false);
         }
 
         // 当前类没有设置本地请求类策略
         if (holdClass.hasNotLocalRequestStrategy()) {
-            holdClass.addLocalRequest(findRequestStrategy(element, false), mMessager, element, isContain);
+            holdClass.addLocalRequest(findRequestStrategy(element, false), mMessager, element, false);
         }
 
         if (!isContain) {
