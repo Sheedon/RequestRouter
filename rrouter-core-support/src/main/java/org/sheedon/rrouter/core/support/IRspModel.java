@@ -24,6 +24,8 @@ package org.sheedon.rrouter.core.support;
  */
 public interface IRspModel<T> {
 
+    Object getCode();
+
     T getData();
 
     boolean isSuccess();

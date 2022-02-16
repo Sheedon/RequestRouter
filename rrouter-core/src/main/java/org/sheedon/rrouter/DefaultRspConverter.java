@@ -12,17 +12,22 @@ import org.sheedon.rrouter.core.support.IRspModel;
 public class DefaultRspConverter extends Converter.Factory {
 
     @Override
-    public Converter<IRspModel<?>, Boolean> createCheckConverter() {
+    public Converter<?, IRspModel<?>> createCheckConverter() {
         return DefaultConverter.INSTANCE;
     }
 
-    static class DefaultConverter implements Converter<IRspModel<?>, Boolean> {
+    static class DefaultConverter implements Converter<Object, IRspModel<?>> {
 
         private static final DefaultConverter INSTANCE = new DefaultConverter();
 
         @Override
-        public Boolean convert(IRspModel<?> rspModel) {
-            return rspModel != null && rspModel.isSuccess();
+        public IRspModel<?> convert(Object o) {
+            if (o == null) {
+                return null;
+            }
+            return (IRspModel<?>) o;
         }
+
+
     }
 }

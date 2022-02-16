@@ -136,9 +136,9 @@ public class ComponentBuilder {
             JavaFile javaFile = JavaFile.builder(packageName, requestTypeSpec)
                     .build();
 
-            javaFile.writeTo(filer);
+//            javaFile.writeTo(filer);
 
-//            javaFile.writeTo(System.out);
+            javaFile.writeTo(System.out);
 
         } catch (IOException e) {
             e.printStackTrace();

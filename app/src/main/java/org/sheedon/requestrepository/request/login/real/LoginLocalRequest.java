@@ -18,17 +18,16 @@ import io.reactivex.rxjava3.core.Observable;
  * @Email: sheedonsun@163.com
  * @Date: 2021/7/18 2:21 下午
  */
-public class LoginLocalRequest extends AbstractLocalRequestStrategy<LoginCard, LoginModel> {
+public class LoginLocalRequest extends AbstractLocalRequestStrategy<LoginCard, RspModel<LoginModel>> {
 
-    public LoginLocalRequest(StrategyCallback<LoginModel> callback) {
+    public LoginLocalRequest(StrategyCallback<RspModel<LoginModel>> callback) {
         super(callback);
     }
 
     @Override
-    protected Observable<IRspModel<LoginModel>> onLoadMethod(LoginCard loginCard) {
+    protected Observable<RspModel<LoginModel>> onLoadMethod(LoginCard loginCard) {
         if (loginCard != null && Objects.equals(loginCard.getUserName(), "admin")
                 && Objects.equals(loginCard.getPassword(), "root")) {
-            callback.onDataLoaded(LoginModel.build());
             return Observable.just(RspModel.buildToSuccess(LoginModel.build()));
         } else {
             return Observable.just(RspModel.buildToFailure("账号密码错误"));

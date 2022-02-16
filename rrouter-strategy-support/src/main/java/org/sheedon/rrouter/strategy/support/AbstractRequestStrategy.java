@@ -17,7 +17,6 @@ package org.sheedon.rrouter.strategy.support;
 
 import org.sheedon.rrouter.core.support.Request;
 import org.sheedon.rrouter.core.support.StrategyCallback;
-import org.sheedon.rrouter.core.support.IRspModel;
 
 import io.reactivex.rxjava3.core.Observable;
 
@@ -40,5 +39,5 @@ public abstract class AbstractRequestStrategy<RequestCard, ResponseModel>
     /**
      * 加载API 方法
      */
-    protected abstract Observable<IRspModel<ResponseModel>> onLoadMethod(RequestCard requestCard);
+    protected abstract Observable<ResponseModel> onLoadMethod(RequestCard requestCard);
 }

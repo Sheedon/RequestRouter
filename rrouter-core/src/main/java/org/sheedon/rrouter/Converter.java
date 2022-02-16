@@ -16,7 +16,7 @@ public interface Converter<T, F> {
 
     class Factory {
 
-        public Converter<IRspModel<?>, Boolean> createCheckConverter() {
+        public Converter<?, IRspModel<?>> createCheckConverter() {
             return null;
         }
 

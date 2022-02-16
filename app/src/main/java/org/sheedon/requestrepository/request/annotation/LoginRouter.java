@@ -13,7 +13,6 @@ import org.sheedon.rrouter.facade.annotation.RequestStrategy;
 import org.sheedon.rrouter.facade.model.RequestBodyAdapter;
 import org.sheedon.rrouter.facade.router.AbstractRequestRouter;
 import org.sheedon.rrouter.facade.router.IResponseDispatcher;
-import org.sheedon.rrouter.core.support.IRspModel;
 import org.sheedon.rrouter.strategy.parameter.DefaultStrategy;
 import org.sheedon.rrouter.strategy.support.AbstractRequestStrategy;
 
@@ -29,7 +28,7 @@ import io.reactivex.rxjava3.core.Observable;
  * @Date: 2021/11/17 9:40 下午
  */
 @RRouter(requestStrategy = DefaultStrategy.TYPE_NOT_DATA_TO_LOCATION)
-public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
+public class LoginRouter extends AbstractRequestRouter<LoginCard, RspModel<LoginModel>> {
 
     /**
      * 用于注解创建对象
@@ -55,7 +54,7 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
      */
     @RequestStrategy
     @Override
-    public Observable<IRspModel<LoginModel>> onLoadRemoteMethod(LoginCard loginCard) {
+    public Observable<RspModel<LoginModel>> onLoadRemoteMethod(LoginCard loginCard) {
         return Observable.just(new Random().nextBoolean() ? RspModel.buildToSuccess(LoginModel.build())
                 : RspModel.buildToFailure("网络请求失败"));
     }
@@ -67,7 +66,7 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
      * @return AbstractRequestStrategy<LoginCard, LoginModel>
      */
     @Override
-    public AbstractRequestStrategy<LoginCard, LoginModel> remoteRequestClass(StrategyCallback<LoginModel> callback) {
+    public AbstractRequestStrategy<LoginCard, RspModel<LoginModel>> remoteRequestClass(StrategyCallback<RspModel<LoginModel>> callback) {
         return new LoginRemoteRequest(callback);
     }
 
@@ -77,7 +76,7 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
      */
     @Override
     @RequestStrategy
-    public AbstractRequestStrategy<LoginCard, LoginModel> localRequestClass(StrategyCallback<LoginModel> callback) {
+    public AbstractRequestStrategy<LoginCard, RspModel<LoginModel>> localRequestClass(StrategyCallback<RspModel<LoginModel>> callback) {
         return new LoginLocalRequest(callback);
     }
 
@@ -91,7 +90,7 @@ public class LoginRouter extends AbstractRequestRouter<LoginCard, LoginModel> {
     }
 
     @Override
-    public IResponseDispatcher<LoginModel> dispatcher() {
+    public IResponseDispatcher<RspModel<LoginModel>> dispatcher() {
         return loginModel -> System.out.println(loginModel.toString());
     }
 

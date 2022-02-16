@@ -17,35 +17,36 @@ import org.sheedon.rrouter.facade.router.IComponent;
  * @Date: 2021/12/12 7:36 下午
  */
 public class AnnotationViewModel extends ViewModel
-        implements AnnotationViewModelComponent.OnCallbackListener {
+//        implements AnnotationViewModelComponent.OnCallbackListener
+{
 
     private static final String TAG = AnnotationViewModel.class.getSimpleName();
 
-    @Request
-    LoginRouter loginRouter;
+//    @Request
+//    LoginRouter loginRouter;
 
     private IComponent component;
 
     public void initConfig() {
-        component = AnnotationViewModelComponent.create(this, this);
+//        component = AnnotationViewModelComponent.create(this, this);
     }
 
     public void login(String name, String password) {
         // 后续这部分改成kotlin 调用方法 来实现
-        LoginRouter.LoginRequestBodyAdapter requestAdapter = loginRouter.requestAdapter();
-        loginRouter.request(requestAdapter.attach(name, password));
+//        LoginRouter.LoginRequestBodyAdapter requestAdapter = loginRouter.requestAdapter();
+//        loginRouter.request(requestAdapter.attach(name, password));
     }
 
-    @Override
-    public void onLoginRouterDataLoaded(LoginModel responseModel) {
-        Log.v(TAG, "result:" + responseModel.getAccessToken());
-    }
-
-    @Override
-    public void onDataNotAvailable(String type, String message) {
-        Log.v(TAG, "type:" + type);
-        Log.v(TAG, "message:" + message);
-    }
+//    @Override
+//    public void onLoginRouterDataLoaded(LoginModel responseModel) {
+//        Log.v(TAG, "result:" + responseModel.getAccessToken());
+//    }
+//
+//    @Override
+//    public void onDataNotAvailable(String type, String message) {
+//        Log.v(TAG, "type:" + type);
+//        Log.v(TAG, "message:" + message);
+//    }
 
     @Override
     protected void onCleared() {

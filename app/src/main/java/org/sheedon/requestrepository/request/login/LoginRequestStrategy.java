@@ -1,5 +1,6 @@
 package org.sheedon.requestrepository.request.login;
 
+import org.sheedon.requestrepository.RspModel;
 import org.sheedon.rrouter.BaseRequestStrategyFactory;
 import org.sheedon.rrouter.StrategyConfig;
 import org.sheedon.requestrepository.data.card.LoginCard;
@@ -16,14 +17,14 @@ import org.sheedon.rrouter.core.support.StrategyCallback;
  * @Email: sheedonsun@163.com
  * @Date: 2021/7/22 12:15 上午
  */
-public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, LoginModel> {
+public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, RspModel<LoginModel>> {
 
     /**
      * 真实网络请求策略
      */
     @Override
     protected Request<LoginCard> onCreateRealRemoteRequestStrategy(
-            StrategyCallback<LoginModel> callback) {
+            StrategyCallback<RspModel<LoginModel>> callback) {
         return new LoginRemoteRequest(callback);
     }
 
@@ -32,7 +33,7 @@ public class LoginRequestStrategy extends BaseRequestStrategyFactory<LoginCard, 
      */
     @Override
     protected Request<LoginCard> onCreateRealLocalRequestStrategy(
-            StrategyCallback<LoginModel> callback) {
+            StrategyCallback<RspModel<LoginModel>> callback) {
         return new LoginLocalRequest(callback);
     }
 

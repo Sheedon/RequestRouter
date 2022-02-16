@@ -16,7 +16,6 @@
 package org.sheedon.rrouter.strategy.support;
 
 import org.sheedon.rrouter.core.support.StrategyCallback;
-import org.sheedon.rrouter.core.support.IRspModel;
 
 import io.reactivex.rxjava3.core.Observable;
 
@@ -33,7 +32,7 @@ public class NullRequestStrategy extends AbstractRequestStrategy<Object, Object>
     }
 
     @Override
-    protected Observable<IRspModel<Object>> onLoadMethod(Object o) {
+    protected Observable<Object> onLoadMethod(Object o) {
         return null;
     }
 

@@ -68,7 +68,7 @@ public class RRouter {
         return Objects.requireNonNull(configRepository, "please RRouter initialize first");
     }
 
-    Converter<IRspModel<?>, Boolean> getRspConverter() {
+    Converter<?, IRspModel<?>> getRspConverter() {
         return Objects.requireNonNull(configRepository.getRspConverter(), "please RRouter initialize first");
     }
 }

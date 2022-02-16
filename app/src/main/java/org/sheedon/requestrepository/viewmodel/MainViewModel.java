@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
+import org.sheedon.requestrepository.RspModel;
 import org.sheedon.rrouter.core.support.DataSource;
 import org.sheedon.requestrepository.data.model.LoginModel;
 import org.sheedon.requestrepository.request.login.LoginRequest;
@@ -45,15 +46,15 @@ public class MainViewModel extends ViewModel {
      */
     private LoginRequest getLoginRequest() {
         if (loginRequest == null) {
-            loginRequest = new LoginRequest(new DataSource.Callback<LoginModel>() {
+            loginRequest = new LoginRequest(new DataSource.Callback<RspModel<LoginModel>>() {
                 @Override
                 public void onDataNotAvailable(String message) {
                     Log.v(TAG,message);
                 }
 
                 @Override
-                public void onDataLoaded(LoginModel loginModel) {
-                    Log.v(TAG,"user: " + loginModel.getAccessToken());
+                public void onDataLoaded(RspModel<LoginModel> loginModel) {
+                    Log.v(TAG,"user: " + loginModel.getData().getAccessToken());
                 }
             });
         }

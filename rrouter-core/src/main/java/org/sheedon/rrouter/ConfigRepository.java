@@ -32,7 +32,7 @@ public class ConfigRepository {
 
     // 组策略执行者
     private final StrategyHandle.Responsibilities strategyHandler;
-    private final Converter<IRspModel<?>, Boolean> rspConverter;
+    private final Converter<?, IRspModel<?>> rspConverter;
 
     private ConfigRepository(Builder builder) {
         strategyHandler = builder.strategyHandler;
@@ -43,7 +43,7 @@ public class ConfigRepository {
         return strategyHandler;
     }
 
-    public Converter<IRspModel<?>, Boolean> getRspConverter() {
+    public Converter<?, IRspModel<?>> getRspConverter() {
         return rspConverter;
     }
 

@@ -37,12 +37,13 @@ public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
 
     private Disposable disposable;
     private Context context;
-    private Converter<IRspModel<?>, Boolean> factory;
+    private Converter<Object, IRspModel<?>> factory;
 
+    @SuppressWarnings("unchecked")
     public BaseRequestStrategy(StrategyCallback<ResponseModel> callback) {
         super(callback);
         this.context = RRouter.getInstance().getContext();
-        this.factory = RRouter.getInstance().getRspConverter();
+        this.factory = (Converter<Object, IRspModel<?>>) RRouter.getInstance().getRspConverter();
     }
 
     /**
@@ -68,12 +69,14 @@ public abstract class BaseRequestStrategy<RequestCard, ResponseModel>
                         return;
                     }
 
-                    if (factory.convert(rspModel)) {
-                        callback.onDataLoaded(rspModel.getData());
+                    IRspModel<?> iRspModel = factory.convert(rspModel);
+                    if (iRspModel != null && iRspModel.isSuccess()) {
+                        callback.onDataLoaded(rspModel);
                         return;
                     }
 
-                    callback.onDataNotAvailable(rspModel.getMessage());
+                    String message = iRspModel != null ? iRspModel.getMessage() : "response data is error";
+                    callback.onDataNotAvailable(message);
                     onSuccessComplete();
                 }, throwable -> {
                     if (callback == null)

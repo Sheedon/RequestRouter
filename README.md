@@ -11,6 +11,9 @@ order as needed, simplifying the logic complexity caused by multiple request met
 
 ![请求路由](https://raw.githubusercontent.com/Sheedon/RequestRouter/82e73f4d32c3f820f8942f77c7fc6ad5feba2288/image/%E8%AF%B7%E6%B1%82%E8%B7%AF%E7%94%B1.svg)
 
+###Notice
+**There are serious bugs in the annotation part, please do not use**
+
 ### ONE、How to use
 
 #### Step 1: Add the JitPack repository to your build file

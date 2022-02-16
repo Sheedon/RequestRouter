@@ -26,7 +26,6 @@ import org.sheedon.rrouter.compiler.Contract;
 import org.sheedon.rrouter.compiler.model.holder.RouterHoldClass;
 import org.sheedon.rrouter.compiler.utils.ClassUtils;
 import org.sheedon.rrouter.core.support.StrategyCallback;
-import org.sheedon.rrouter.core.support.IRspModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -118,9 +117,9 @@ public abstract class AbstractRequestBuilder {
             JavaFile javaFile = JavaFile.builder(packageName, requestTypeSpec)
                     .build();
 
-            javaFile.writeTo(filer);
+//            javaFile.writeTo(filer);
 
-//            javaFile.writeTo(System.out);
+            javaFile.writeTo(System.out);
             return ClassName.get(packageName, className);
         } catch (IOException e) {
             e.printStackTrace();
@@ -173,10 +172,8 @@ public abstract class AbstractRequestBuilder {
     private MethodSpec buildLoadMethod(ClassName[] genericsClass) {
 
         // 反馈结果
-        ParameterizedTypeName rsp = ParameterizedTypeName.get(ClassName.get(IRspModel.class),
-                genericsClass[1]);
         ParameterizedTypeName observable = ParameterizedTypeName.get(
-                ClassName.bestGuess(Contract.OBSERVABLE_RXJAVA), rsp);
+                ClassName.bestGuess(Contract.OBSERVABLE_RXJAVA), genericsClass[1]);
 
         // 请求字段
         ClassName requestCard = genericsClass[0];

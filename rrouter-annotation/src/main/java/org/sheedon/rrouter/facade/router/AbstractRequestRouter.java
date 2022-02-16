@@ -19,7 +19,6 @@ import org.sheedon.rrouter.core.support.StrategyCallback;
 import org.sheedon.rrouter.facade.annotation.Provider;
 import org.sheedon.rrouter.facade.model.Converter;
 import org.sheedon.rrouter.facade.model.RequestBodyAdapter;
-import org.sheedon.rrouter.core.support.IRspModel;
 import org.sheedon.rrouter.strategy.parameter.DefaultStrategy;
 import org.sheedon.rrouter.strategy.support.AbstractRequestStrategy;
 
@@ -96,7 +95,7 @@ public class AbstractRequestRouter<RequestCard, ResponseModel> {
      * @param requestCard request body
      * @return Observable<IRspModel < ResponseModel>>
      */
-    public Observable<IRspModel<ResponseModel>> onLoadRemoteMethod(RequestCard requestCard) {
+    public Observable<ResponseModel> onLoadRemoteMethod(RequestCard requestCard) {
         return null;
     }
 
@@ -121,7 +120,7 @@ public class AbstractRequestRouter<RequestCard, ResponseModel> {
      * @param requestCard request body
      * @return Observable<IRspModel < ResponseModel>>
      */
-    public Observable<IRspModel<ResponseModel>> onLoadLocalMethod(RequestCard requestCard) {
+    public Observable<ResponseModel> onLoadLocalMethod(RequestCard requestCard) {
         return null;
     }
 
