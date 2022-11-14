@@ -1,16 +1,11 @@
 plugins {
-    id 'java-library'
+    id 'kotlin-kapt'
 }
+apply from: rootProject.file("gradle/java_common_config.gradle")
 
 dependencies {
 
-    implementation 'io.reactivex.rxjava3:rxjava:3.0.12'
+    implementation deps.kotlin.core
+    implementation deps.kotlin.stdlib8
     api project(':rrouter-core-support')
 }
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-apply from: '../script/gradle-jcenter-push.gradle'
