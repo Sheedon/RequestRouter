@@ -1,8 +1,10 @@
-
-apply from: rootProject.file("gradle/android_library_config.gradle")
+apply plugin: "org.jetbrains.kotlin.jvm"
+apply from: rootProject.file("gradle/java_common_config.gradle")
 
 dependencies {
 
-    implementation deps.androidx.core
-    api project(':rrouter-core-support')
+
+    implementation deps.kotlin.core
+    implementation deps.kotlin.stdlib8
+    compileOnly deps.android.android
 }
