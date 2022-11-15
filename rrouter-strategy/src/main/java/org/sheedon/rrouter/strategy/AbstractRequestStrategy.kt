@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter.core.support;
+package org.sheedon.rrouter.strategy
+
+import org.sheedon.rrouter.core.Request
+import org.sheedon.rrouter.core.StrategyCallback
 
 /**
- * 基础数据结果反馈接收接口
+ * 抽象请求策略支持
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
- * @Date: 2021/11/3 12:18 上午
+ * @Date: 2021/11/15 10:37 下午
  */
-public interface IRspModel<T> {
-
-    Object getCode();
-
-    T getData();
-
-    boolean isSuccess();
-
-    String getMessage();
-
+abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
+    protected var callback: StrategyCallback<ResponseModel>?
+) : Request<RequestCard> {
+    /**
+     * 加载API 方法
+     */
+    protected abstract suspend fun onLoadMethod(requestCard: RequestCard): ResponseModel?
 }

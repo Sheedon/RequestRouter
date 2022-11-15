@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter;
+package org.sheedon.rrouter.strategy;
 
 import android.util.SparseArray;
 
-import org.sheedon.rrouter.strategy.NotDataToLocationStrategyHandler;
-import org.sheedon.rrouter.strategy.NotDataToRemoteStrategyHandler;
-import org.sheedon.rrouter.strategy.OnlyLocalStrategyHandler;
-import org.sheedon.rrouter.strategy.OnlyRemoteStrategyHandler;
-import org.sheedon.rrouter.strategy.SyncRemoteAndLocationStrategyHandler;
-import org.sheedon.rrouter.strategy.parameter.DefaultRequestType;
-import org.sheedon.rrouter.strategy.parameter.DefaultStrategy;
+import org.sheedon.rrouter.core.StrategyHandle;
+import org.sheedon.rrouter.strategy.handler.NotDataToLocationStrategyHandler;
+import org.sheedon.rrouter.strategy.handler.NotDataToRemoteStrategyHandler;
+import org.sheedon.rrouter.strategy.handler.OnlyLocalStrategyHandler;
+import org.sheedon.rrouter.strategy.handler.OnlyRemoteStrategyHandler;
+import org.sheedon.rrouter.strategy.handler.SyncRemoteAndLocationStrategyHandler;
 
 /**
  * 策略配置项

@@ -13,19 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter.strategy.parameter;
+package org.sheedon.rrouter.strategy
+
+import org.sheedon.rrouter.core.StrategyCallback
 
 /**
- * 默认的请求策略
+ * 默认空请求策略
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
- * @Date: 2021/11/15 10:00 下午
+ * @Date: 2021/11/15 11:07 下午
  */
-public interface DefaultStrategy {
-    int TYPE_ONLY_REMOTE = 0;// 单一远程（网络）请求
-    int TYPE_NOT_DATA_TO_REMOTE = 1;// 优先本地，无数据取远程（网络）
-    int TYPE_SYNC_REMOTE_AND_LOCATION = 2;// 同步请求，本地和远程（网络）
-    int TYPE_NOT_DATA_TO_LOCATION = 3;//优先远程（网络）请求，远程（网络）请求失败，搜索本地数据 「类似无网络登陆」
-    int TYPE_ONLY_LOCAL = 4;// 单一本地请求
+class NullRequestStrategy(callback: StrategyCallback<Any>?) : AbstractRequestStrategy<Any, Any>(
+    callback!!
+) {
+    override suspend fun onLoadMethod(o: Any): Any? {
+        return null
+    }
+
+    override fun request(o: Any) {}
+    override fun onRequestType(): Int {
+        return 0
+    }
+
+    override fun onCancel() {}
+    override fun onDestroy() {}
 }

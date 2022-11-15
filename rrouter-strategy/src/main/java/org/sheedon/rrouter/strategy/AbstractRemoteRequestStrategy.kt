@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter;
+package org.sheedon.rrouter.strategy
 
-import org.sheedon.rrouter.core.support.StrategyCallback;
+import kotlinx.coroutines.CoroutineScope
+import org.sheedon.rrouter.core.StrategyCallback
 
 /**
  * 网络请求策略
@@ -24,19 +25,14 @@ import org.sheedon.rrouter.core.support.StrategyCallback;
  * @Email: sheedonsun@163.com
  * @Date: 2021/7/18 11:41 上午
  */
-public abstract class AbstractRemoteRequestStrategy<RequestCard, ResponseModel>
-        extends BaseRequestStrategy<RequestCard, ResponseModel> {
-
-
-    public AbstractRemoteRequestStrategy(StrategyCallback<ResponseModel> callback) {
-        super(callback);
-    }
-
+abstract class AbstractRemoteRequestStrategy<RequestCard, ResponseModel>(
+    coroutineScope: CoroutineScope,
+    callback: StrategyCallback<ResponseModel>?
+) : BaseRequestStrategy<RequestCard, ResponseModel>(coroutineScope, callback) {
     /**
      * 请求类型 - 网络请求
      */
-    @Override
-    public int onRequestType() {
-        return StrategyConfig.REQUEST.TYPE_REMOTE_REQUEST;
+    override fun onRequestType(): Int {
+        return StrategyConfig.REQUEST.TYPE_REMOTE_REQUEST
     }
 }

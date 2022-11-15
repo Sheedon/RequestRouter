@@ -13,16 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter;
+package org.sheedon.rrouter.strategy
+
+import kotlinx.coroutines.CoroutineScope
+import org.sheedon.rrouter.core.StrategyCallback
 
 /**
- * 数据拷贝
+ * 默认本地请求策略
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
- * @Date: 2021/11/2 6:02 下午
+ * @Date: 2021/7/18 11:36 上午
  */
-public interface DataCloneable extends Cloneable{
-
-    Object clone() throws CloneNotSupportedException;
+abstract class AbstractLocalRequestStrategy<RequestCard, ResponseModel>(
+    coroutineScope: CoroutineScope,
+    callback: StrategyCallback<ResponseModel>?
+) : BaseRequestStrategy<RequestCard, ResponseModel>(coroutineScope, callback) {
+    /**
+     * 请求类型 - 本地请求
+     */
+    override fun onRequestType(): Int {
+        return StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST
+    }
 }

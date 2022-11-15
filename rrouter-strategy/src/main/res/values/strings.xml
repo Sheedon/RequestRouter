@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<resources>
-
-    <string name="not_more_data">无更多信息</string>
-    <string name="data_error">数据有误</string>
-    <string name="data_back_error">返回数据有误</string>
-</resources>

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter.strategy.parameter;
+package org.sheedon.rrouter.strategy;
 
 /**
  * 默认请求类型

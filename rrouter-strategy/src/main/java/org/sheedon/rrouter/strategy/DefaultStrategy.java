@@ -13,29 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter;
-
-import org.sheedon.rrouter.core.support.StrategyCallback;
+package org.sheedon.rrouter.strategy;
 
 /**
- * 默认本地请求策略
+ * 默认的请求策略
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
- * @Date: 2021/7/18 11:36 上午
+ * @Date: 2021/11/15 10:00 下午
  */
-public abstract class AbstractLocalRequestStrategy<RequestCard, ResponseModel>
-        extends BaseRequestStrategy<RequestCard, ResponseModel> {
-
-    public AbstractLocalRequestStrategy(StrategyCallback<ResponseModel> callback) {
-        super(callback);
-    }
-
-    /**
-     * 请求类型 - 本地请求
-     */
-    @Override
-    public int onRequestType() {
-        return StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST;
-    }
+public interface DefaultStrategy {
+    int TYPE_ONLY_REMOTE = 0;// 单一远程（网络）请求
+    int TYPE_NOT_DATA_TO_REMOTE = 1;// 优先本地，无数据取远程（网络）
+    int TYPE_SYNC_REMOTE_AND_LOCATION = 2;// 同步请求，本地和远程（网络）
+    int TYPE_NOT_DATA_TO_LOCATION = 3;//优先远程（网络）请求，远程（网络）请求失败，搜索本地数据 「类似无网络登陆」
+    int TYPE_ONLY_LOCAL = 4;// 单一本地请求
 }
