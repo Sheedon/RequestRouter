@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.requestrepository.request
+package org.sheedon.requestrepository.request.config.rxjava
 
-import kotlinx.coroutines.CoroutineScope
 import org.sheedon.rrouter.core.StrategyCallback
-import org.sheedon.rrouter.coroutine.AbstractRequestStrategy
+import org.sheedon.rrouter.rxjava.AbstractRequestStrategy
 import org.sheedon.rrouter.strategy.StrategyConfig
 
 /**
@@ -28,9 +27,8 @@ import org.sheedon.rrouter.strategy.StrategyConfig
  * @Date: 2021/7/18 11:41 上午
  */
 abstract class AbstractRemoteRequestStrategy<RequestCard, ResponseModel>(
-    coroutineScope: CoroutineScope,
     callback: StrategyCallback<ResponseModel>?
-) : AbstractRequestStrategy<RequestCard, ResponseModel>(coroutineScope, callback) {
+) : AbstractRequestStrategy<RequestCard, ResponseModel>(callback) {
     /**
      * 请求类型 - 网络请求
      */

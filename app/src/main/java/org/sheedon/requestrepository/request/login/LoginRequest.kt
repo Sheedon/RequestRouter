@@ -1,11 +1,10 @@
-package org.sheedon.requestrepository.request.login;
+package org.sheedon.requestrepository.request.login
 
-
-import org.sheedon.requestrepository.RspModel;
-import org.sheedon.rrouter.BaseRequestStrategyFactory;
-import org.sheedon.rrouter.core.support.DataSource;
-import org.sheedon.requestrepository.data.card.LoginCard;
-import org.sheedon.requestrepository.data.model.LoginModel;
+import org.sheedon.requestrepository.RspModel
+import org.sheedon.requestrepository.data.model.LoginModel
+import org.sheedon.requestrepository.data.card.LoginCard
+import org.sheedon.rrouter.strategy.BaseRequestStrategyFactory
+import org.sheedon.rrouter.core.DataSource
 
 /**
  * 登陆请求
@@ -14,18 +13,12 @@ import org.sheedon.requestrepository.data.model.LoginModel;
  * @Email: sheedonsun@163.com
  * @Date: 2021/7/18 2:08 下午
  */
-public class LoginRequest extends BaseRequest<LoginCard, RspModel<LoginModel>> {
-
+class LoginRequest(callback: DataSource.Callback<RspModel<LoginModel>>) :
+    BaseRequest<LoginCard, RspModel<LoginModel>>(callback) {
     // 请求卡片
-    private final LoginCard requestCard = new LoginCard();
-
-    public LoginRequest(DataSource.Callback<RspModel<LoginModel>> callback) {
-        super(callback);
-    }
-
-    @Override
-    protected LoginCard loadRequestCard() {
-        return requestCard;
+    private val requestCard = LoginCard()
+    override fun loadRequestCard(): LoginCard {
+        return requestCard
     }
 
     /**
@@ -34,16 +27,15 @@ public class LoginRequest extends BaseRequest<LoginCard, RspModel<LoginModel>> {
      * @param account  账号
      * @param password 密码
      */
-    public void login(String account, String password) {
-        requestCard.update(account, password);
-        proxy.request();
+    fun login(account: String?, password: String?) {
+        requestCard.update(account, password)
+        proxy.request()
     }
 
     /**
      * 创建请求策略工厂
      */
-    @Override
-    protected BaseRequestStrategyFactory<LoginCard, RspModel<LoginModel>> createRequestStrategyFactory() {
-        return new LoginRequestStrategy();
+    override fun createRequestStrategyFactory(): BaseRequestStrategyFactory<LoginCard, RspModel<LoginModel>> {
+        return LoginRequestStrategy()
     }
 }

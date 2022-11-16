@@ -5,9 +5,6 @@ import android.util.Log;
 import androidx.lifecycle.ViewModel;
 
 import org.sheedon.requestrepository.data.model.LoginModel;
-import org.sheedon.requestrepository.request.annotation.LoginRouter;
-import org.sheedon.rrouter.facade.annotation.Request;
-import org.sheedon.rrouter.facade.router.IComponent;
 
 /**
  * 通过请求路由注解的方式实现调度
@@ -25,7 +22,7 @@ public class AnnotationViewModel extends ViewModel
 //    @Request
 //    LoginRouter loginRouter;
 
-    private IComponent component;
+//    private IComponent component;
 
     public void initConfig() {
 //        component = AnnotationViewModelComponent.create(this, this);
@@ -51,9 +48,9 @@ public class AnnotationViewModel extends ViewModel
     @Override
     protected void onCleared() {
         super.onCleared();
-        if (component != null) {
-            component.onDestroy();
-        }
-        component = null;
+//        if (component != null) {
+//            component.onDestroy();
+//        }
+//        component = null;
     }
 }

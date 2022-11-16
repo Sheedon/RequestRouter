@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.requestrepository.request
+package org.sheedon.requestrepository.request.config.coroutine
 
 import kotlinx.coroutines.CoroutineScope
 import org.sheedon.rrouter.core.StrategyCallback

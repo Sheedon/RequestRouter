@@ -2,12 +2,12 @@ package org.sheedon.requestrepository;
 
 import android.app.Application;
 
-import org.sheedon.rrouter.ConfigRepository;
-import org.sheedon.rrouter.RRouter;
-import org.sheedon.rrouter.StrategyConfig;
+
+import org.sheedon.rrouter.core.ConfigRepository;
+import org.sheedon.rrouter.core.RRouter;
+import org.sheedon.rrouter.strategy.StrategyConfig;
 
 /**
- *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
  * @Date: 2021/12/12 9:05 下午
@@ -21,6 +21,6 @@ public class App extends Application {
                 .strategyArray(StrategyConfig.strategyHandlerArray)
                 .build();
 
-        RRouter.setUp(this, repository);
+        RRouter.setUp(repository);
     }
 }

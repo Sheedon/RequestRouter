@@ -13,19 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter.core.support;
+package org.sheedon.requestrepository.request.config.rxjava
+
+import org.sheedon.rrouter.core.StrategyCallback
+import org.sheedon.rrouter.rxjava.AbstractRequestStrategy
+import org.sheedon.rrouter.strategy.StrategyConfig
 
 /**
- * 策略回调监听器
+ * 默认本地请求策略
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
- * @Date: 2021/11/15 10:26 下午
+ * @Date: 2021/7/18 11:36 上午
  */
-public interface StrategyCallback<T> {
-    // 数据加载成功, 请求成功
-    void onDataLoaded(T t);
-
-    // 数据加载失败, 请求失败
-    void onDataNotAvailable(String message);
+abstract class AbstractLocalRequestStrategy<RequestCard, ResponseModel>(
+    callback: StrategyCallback<ResponseModel>?
+) : AbstractRequestStrategy<RequestCard, ResponseModel>(callback) {
+    /**
+     * 请求类型 - 本地请求
+     */
+    override fun onRequestType(): Int {
+        return StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST
+    }
 }
