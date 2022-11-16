@@ -29,17 +29,17 @@ import org.sheedon.rrouter.core.*
  * @Email: sheedonsun@163.com
  * @Date: 2021/11/15 10:37 下午
  */
-abstract class AbstractRequestStrategy<RequestCard, ResponseModel : Any>(
+abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
     protected var callback: StrategyCallback<ResponseModel>?
 ) : Request<RequestCard> {
 
     private var disposable: Disposable? = null
-    private var factory: Converter<Any, IRspModel<*>>?
+    private var factory: Converter<ResponseModel, IRspModel<*>>?
     private var errorMessage: String
 
     init {
         @Suppress("UNCHECKED_CAST")
-        factory = RRouter.getInstance().rspConverter as Converter<Any, IRspModel<*>>
+        factory = RRouter.getInstance().rspConverter as Converter<ResponseModel, IRspModel<*>>
         errorMessage = RRouter.getInstance().configRepository.getErrorMessage()
     }
 
@@ -48,6 +48,9 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel : Any>(
      *
      * @param requestCard 请求卡片
      */
+    @Suppress("UPPER_BOUND_VIOLATED_BASED_ON_JAVA_ANNOTATIONS",
+        "UPPER_BOUND_VIOLATED_BASED_ON_JAVA_ANNOTATIONS"
+    )
     override fun request(requestCard: RequestCard) {
         val job = disposable
         if (job != null && !job.isDisposed) {
@@ -65,10 +68,10 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel : Any>(
 
                     if (iRspModel.isSuccess()) {
                         callback?.onDataLoaded(rspModel)
+                    }else{
+                        val message = iRspModel.getMessage()
+                        callback?.onDataNotAvailable(message)
                     }
-
-                    val message = iRspModel.getMessage()
-                    callback?.onDataNotAvailable(message)
                     onSuccessComplete()
                 }
 
@@ -80,6 +83,7 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel : Any>(
     /**
      * 加载API 方法
      */
+    @Suppress("UPPER_BOUND_VIOLATED_BASED_ON_JAVA_ANNOTATIONS")
     protected abstract fun onLoadMethod(requestCard: RequestCard): Observable<ResponseModel>
 
     /**
