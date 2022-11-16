@@ -81,7 +81,7 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
     /**
      * 加载API 方法
      */
-    protected abstract suspend fun onLoadMethod(requestCard: RequestCard): ResponseModel?
+    protected abstract suspend fun onLoadMethod(requestCard: RequestCard): ResponseModel
 
     /**
      * 成功返回结果
