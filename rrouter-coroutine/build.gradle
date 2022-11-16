@@ -1,0 +1,13 @@
+apply plugin: "org.jetbrains.kotlin.jvm"
+apply from: rootProject.file("gradle/java_common_config.gradle")
+
+dependencies {
+
+    implementation deps.kotlin.core
+    implementation deps.kotlin.stdlib8
+    implementation deps.kotlin.coroutines.android
+    implementation deps.kotlin.coroutines.core
+    compileOnly deps.android.android
+
+    api project(":rrouter-core")
+}
