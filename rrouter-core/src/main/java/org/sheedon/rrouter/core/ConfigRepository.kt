@@ -28,15 +28,19 @@ class ConfigRepository private constructor(builder: Builder) {
     // 组策略执行者
     private var strategyHandler: StrategyHandle.Responsibilities
     private var rspConverter: Converter<*, IRspModel<*>?>
+    private var errorMessage: String = "network data error"
 
     init {
         strategyHandler = builder.strategyHandler!!
         rspConverter = builder.rspConverter!!.createCheckConverter()!!
+        errorMessage = builder.errorMessage
     }
 
     internal fun getStrategyHandler(): StrategyHandle.Responsibilities {
         return strategyHandler
     }
+
+    fun getErrorMessage(): String = errorMessage
 
     fun getRspConverter(): Converter<*, IRspModel<*>?> {
         return rspConverter
@@ -54,6 +58,8 @@ class ConfigRepository private constructor(builder: Builder) {
 
         // 默认结果核实转换器
         internal var rspConverter: Converter.Factory? = null
+
+        internal var errorMessage: String = "network data error"
 
         /**
          * 策略执行者
@@ -97,6 +103,10 @@ class ConfigRepository private constructor(builder: Builder) {
          */
         fun rspConverter(rspConverter: Converter.Factory) = apply {
             this.rspConverter = rspConverter
+        }
+
+        fun errorMessage(errorMessage: String) = apply {
+            this.errorMessage = errorMessage
         }
 
         /**

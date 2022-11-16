@@ -15,8 +15,6 @@
  */
 package org.sheedon.rrouter.core;
 
-import android.app.Application;
-
 import java.util.Objects;
 
 /**
@@ -33,40 +31,33 @@ public class RRouter {
     private static boolean sInstalled = false;
     // 基础参数配置项
     private ConfigRepository configRepository;
-    // 应用上下文
-    private Application context;
 
     private RRouter() {
 
     }
 
-    public static void setUp(Application application, ConfigRepository repository) {
+    public static void setUp(ConfigRepository repository) {
         if (sInstalled) {
             return;
         }
 
-        sInstance.context = Objects.requireNonNull(application, "application == null");
         sInstance.configRepository = Objects.requireNonNull(repository, "repository == null");
         sInstalled = true;
     }
 
-    static RRouter getInstance() {
+    public static RRouter getInstance() {
         return sInstance;
     }
 
-    public Application getContext() {
-        return context;
-    }
-
-    static boolean isInstalled() {
+    public static boolean isInstalled() {
         return sInstalled;
     }
 
-    ConfigRepository getConfigRepository() {
+    public ConfigRepository getConfigRepository() {
         return Objects.requireNonNull(configRepository, "please RRouter initialize first");
     }
 
-    Converter<?, IRspModel<?>> getRspConverter() {
+    public Converter<?, IRspModel<?>> getRspConverter() {
         return Objects.requireNonNull(configRepository.getRspConverter(), "please RRouter initialize first");
     }
 }

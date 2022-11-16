@@ -60,7 +60,7 @@ interface StrategyHandle {
      * @return 执行完成的进度
     </ResponseModel> */
     fun <ResponseModel> handleCallbackStrategy(
-        processChain: ProcessChain?,
+        processChain: ProcessChain,
         callback: DataSource.Callback<ResponseModel>?,
         model: ResponseModel,
         message: String?,
