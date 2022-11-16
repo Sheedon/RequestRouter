@@ -62,7 +62,7 @@ interface StrategyHandle {
     fun <ResponseModel> handleCallbackStrategy(
         processChain: ProcessChain,
         callback: DataSource.Callback<ResponseModel>?,
-        model: ResponseModel,
+        model: ResponseModel?,
         message: String?,
         isSuccess: Boolean
     ): Boolean
@@ -113,7 +113,7 @@ interface StrategyHandle {
         fun <ResponseModel> handleCallbackStrategy(
             requestStrategyType: Int, processChain: ProcessChain,
             callback: DataSource.Callback<ResponseModel>?,
-            responseModel: ResponseModel, message: String?,
+            responseModel: ResponseModel?, message: String?,
             isSuccess: Boolean
         ): Boolean
     }

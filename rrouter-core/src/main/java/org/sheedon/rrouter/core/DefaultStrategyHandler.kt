@@ -78,7 +78,7 @@ internal class DefaultStrategyHandler private constructor() :
         requestStrategyType: Int,
         processChain: ProcessChain,
         callback: DataSource.Callback<ResponseModel>?,
-        responseModel: ResponseModel, message: String?,
+        responseModel: ResponseModel?, message: String?,
         isSuccess: Boolean
     ): Boolean {
         val handler = handlerFactory?.loadStrategyHandler(requestStrategyType)

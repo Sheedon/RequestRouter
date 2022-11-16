@@ -37,7 +37,7 @@ interface DataSource {
     </T> */
     interface SucceedCallback<T> {
         // 数据加载成功, 网络请求成功
-        fun onDataLoaded(t: T)
+        fun onDataLoaded(t: T?)
     }
 
     /**

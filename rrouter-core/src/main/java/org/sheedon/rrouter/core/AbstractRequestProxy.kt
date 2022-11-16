@@ -62,7 +62,7 @@ abstract class AbstractRequestProxy<RequestCard, ResponseModel>(
      * 绑定策略执行者
      */
     final override fun bindStrategyHandler(): StrategyHandle.Responsibilities {
-        val repository: ConfigRepository = RRouter.getInstance().getConfigRepository()
+        val repository: ConfigRepository = RRouter.getInstance().configRepository
         return repository.getStrategyHandler()
     }
 
@@ -183,7 +183,7 @@ abstract class AbstractRequestProxy<RequestCard, ResponseModel>(
             // 执行反馈处理
             val handleSuccess = handler.handleCallbackStrategy(
                 type, chain!!,
-                callback, responseModel!!, message, isSuccess
+                callback, responseModel, message, isSuccess
             )
 
             // 当前状态为完成，则代表执行完成
@@ -203,7 +203,7 @@ abstract class AbstractRequestProxy<RequestCard, ResponseModel>(
 
         private fun notifyCallback(
             isSuccess: Boolean,
-            responseModel: ResponseModel,
+            responseModel: ResponseModel?,
             message: String?
         ) {
             // 无执行器执行
