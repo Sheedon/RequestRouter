@@ -38,7 +38,7 @@ class OnlyRemoteStrategyHandler : BaseStrategyHandler() {
 
     /**
      * 执行真实请求行为
-     * 类型为单一网络请求 [StrategyConfig.STRATEGY.TYPE_ONLY_NETWORK]，
+     * 类型为单一网络请求 [StrategyConfig.STRATEGY.TYPE_ONLY_REMOTE]，
      * 且当前状态为默认状态，则获取网络请求代理并做请求，否则请求调度失败
      *
      * @param processChain      流程链
@@ -56,7 +56,7 @@ class OnlyRemoteStrategyHandler : BaseStrategyHandler() {
     }
 
     /**
-     * 类型为单一网络请求 [StrategyConfig.STRATEGY.TYPE_ONLY_NETWORK]，
+     * 类型为单一网络请求 [StrategyConfig.STRATEGY.TYPE_ONLY_REMOTE]，
      * 当前进度为网络请求 [ProcessChain.STATUS_REQUESTING]，则执行反馈操作
      * 设置状态 [ProcessChain.STATUS_COMPLETED]
      *
@@ -71,7 +71,7 @@ class OnlyRemoteStrategyHandler : BaseStrategyHandler() {
     override fun <ResponseModel> handleRealCallbackStrategy(
         processChain: ProcessChain,
         callback: DataSource.Callback<ResponseModel>?,
-        model: ResponseModel, message: String?,
+        model: ResponseModel?, message: String?,
         isSuccess: Boolean
     ): Boolean {
         return super.handleRealCallbackStrategy(

@@ -71,7 +71,7 @@ class NotDataToLocationStrategyHandler : BaseStrategyHandler() {
     override fun <ResponseModel> handleRealCallbackStrategy(
         processChain: ProcessChain,
         callback: DataSource.Callback<ResponseModel>?,
-        model: ResponseModel, message: String?,
+        model: ResponseModel?, message: String?,
         isSuccess: Boolean
     ): Boolean {
 

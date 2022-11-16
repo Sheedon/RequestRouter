@@ -42,7 +42,7 @@ class SyncRemoteAndLocationStrategyHandler : BaseStrategyHandler() {
     }
 
     /**
-     * 类型为本地网络同步请求 [StrategyConfig.STRATEGY.TYPE_SYNC_NETWORK_AND_LOCATION]，
+     * 类型为本地网络同步请求 [StrategyConfig.STRATEGY.TYPE_SYNC_REMOTE_AND_LOCATION]，
      * 则依次本地网络请求，设置进度
      *
      * @param processChain      流程链
@@ -62,7 +62,6 @@ class SyncRemoteAndLocationStrategyHandler : BaseStrategyHandler() {
         // 请求不存在，则请求失败
         if (localRequest == null && netRequest == null) {
             processChain.updateCurrentStatus(ProcessChain.STATUS_COMPLETED)
-            processChain.updateCurrentStatus(ProcessChain.STATUS_COMPLETED)
             return false
         }
 
@@ -70,7 +69,6 @@ class SyncRemoteAndLocationStrategyHandler : BaseStrategyHandler() {
         if (processChain.getStatus(0) != ProcessChain.STATUS_NORMAL
             && processChain.getStatus(1) != ProcessChain.STATUS_NORMAL
         ) {
-            processChain.updateCurrentStatus(ProcessChain.STATUS_COMPLETED)
             processChain.updateCurrentStatus(ProcessChain.STATUS_COMPLETED)
             return false
         }
@@ -101,7 +99,32 @@ class SyncRemoteAndLocationStrategyHandler : BaseStrategyHandler() {
     }
 
     /**
-     * 类型为并行请求 [StrategyConfig.STRATEGY.TYPE_SYNC_NETWORK_AND_LOCATION]，
+     * 处理反馈代理
+     *
+     * @param callback        反馈监听
+     * @param message         描述信息
+     * @param isSuccess       是否请求成功
+     * @param <ResponseModel> 结果model类型
+     * @return 是否处理成功
+    </ResponseModel> */
+    override fun <ResponseModel> handleCallbackStrategy(
+        processChain: ProcessChain,
+        callback: DataSource.Callback<ResponseModel>?,
+        model: ResponseModel?,
+        message: String?,
+        isSuccess: Boolean
+    ): Boolean {
+        // 当前状态是默认，意味着流程错误，不往下执行
+        return if (processChain.getCurrentStatus() == ProcessChain.STATUS_NORMAL) {
+            false
+        } else handleRealCallbackStrategy(
+            processChain, callback,
+            model, message, isSuccess
+        )
+    }
+
+    /**
+     * 类型为并行请求 [StrategyConfig.STRATEGY.TYPE_SYNC_REMOTE_AND_LOCATION]，
      * 两者都是完成，则反馈失败，状态为提交中，则返回数据
      *
      * @param processChain    流程链
@@ -115,7 +138,7 @@ class SyncRemoteAndLocationStrategyHandler : BaseStrategyHandler() {
     override fun <ResponseModel> handleRealCallbackStrategy(
         processChain: ProcessChain,
         callback: DataSource.Callback<ResponseModel>?,
-        model: ResponseModel, message: String?,
+        model: ResponseModel?, message: String?,
         isSuccess: Boolean
     ): Boolean {
         synchronized(lock) {
@@ -147,7 +170,7 @@ class SyncRemoteAndLocationStrategyHandler : BaseStrategyHandler() {
     private fun <ResponseModel> handleCallback(
         processChain: ProcessChain, index: Int,
         callback: DataSource.Callback<ResponseModel>?,
-        responseModel: ResponseModel, message: String?,
+        responseModel: ResponseModel?, message: String?,
         isSuccess: Boolean
     ): Boolean {
         if (processChain.getStatus(index) == ProcessChain.STATUS_REQUESTING) {

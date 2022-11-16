@@ -37,7 +37,7 @@ class NotDataToRemoteStrategyHandler : BaseStrategyHandler() {
     }
 
     /**
-     * 类型为优先本地请求，请求错误，才网络请求 [StrategyConfig.STRATEGY.TYPE_NOT_DATA_TO_NET]，
+     * 类型为优先本地请求，请求错误，才网络请求 [StrategyConfig.STRATEGY.TYPE_NOT_DATA_TO_REMOTE]，
      * 第一次请求，则做网络请求，第二次进来走本地请求
      * 且当前状态必须为默认状态，否则请求失败
      *
@@ -47,16 +47,16 @@ class NotDataToRemoteStrategyHandler : BaseStrategyHandler() {
      * @param <RequestCard>     请求卡片
      * @return 是否处理成功
     </RequestCard> */
-    protected override fun <RequestCard> handleRealRequestStrategy(
+    override fun <RequestCard> handleRealRequestStrategy(
         processChain: ProcessChain,
         requestStrategies: SparseArray<Request<RequestCard>>,
         card: RequestCard
     ): Boolean {
-        return super.handleRealRequestStrategy(processChain, requestStrategies!!, card)
+        return super.handleRealRequestStrategy(processChain, requestStrategies, card)
     }
 
     /**
-     * 类型为优先本地请求，请求错误，才网络请求 [StrategyConfig.STRATEGY.TYPE_NOT_DATA_TO_NET]，
+     * 类型为优先本地请求，请求错误，才网络请求 [StrategyConfig.STRATEGY.TYPE_NOT_DATA_TO_REMOTE]，
      * 当前进度为 [ProcessChain.STATUS_REQUESTING]，则执行反馈操作
      * 设置状态 [ProcessChain.STATUS_COMPLETED]
      *
@@ -71,7 +71,7 @@ class NotDataToRemoteStrategyHandler : BaseStrategyHandler() {
     override fun <ResponseModel> handleRealCallbackStrategy(
         processChain: ProcessChain,
         callback: DataSource.Callback<ResponseModel>?,
-        model: ResponseModel, message: String?,
+        model: ResponseModel?, message: String?,
         isSuccess: Boolean
     ): Boolean {
         // 状态并非「发送中」，则反馈执行失败

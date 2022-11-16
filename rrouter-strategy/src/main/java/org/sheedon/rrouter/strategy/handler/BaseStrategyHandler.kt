@@ -91,7 +91,7 @@ abstract class BaseStrategyHandler : StrategyHandle {
     override fun <ResponseModel> handleCallbackStrategy(
         processChain: ProcessChain,
         callback: DataSource.Callback<ResponseModel>?,
-        model: ResponseModel,
+        model: ResponseModel?,
         message: String?,
         isSuccess: Boolean
     ): Boolean {
@@ -126,7 +126,7 @@ abstract class BaseStrategyHandler : StrategyHandle {
     protected open fun <ResponseModel> handleRealCallbackStrategy(
         processChain: ProcessChain,
         callback: DataSource.Callback<ResponseModel>?,
-        model: ResponseModel,
+        model: ResponseModel?,
         message: String?,
         isSuccess: Boolean
     ): Boolean {
@@ -151,7 +151,7 @@ abstract class BaseStrategyHandler : StrategyHandle {
     </ResponseModel> */
     protected open fun <ResponseModel> handleCallback(
         callback: DataSource.Callback<ResponseModel>?,
-        model: ResponseModel, message: String?,
+        model: ResponseModel?, message: String?,
         isSuccess: Boolean
     ) {
         if (isSuccess) {
