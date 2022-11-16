@@ -13,29 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter.strategy
+package org.sheedon.requestrepository.request
 
+import kotlinx.coroutines.CoroutineScope
 import org.sheedon.rrouter.core.StrategyCallback
+import org.sheedon.rrouter.coroutine.AbstractRequestStrategy
+import org.sheedon.rrouter.strategy.StrategyConfig
 
 /**
- * 默认空请求策略
+ * 网络请求策略
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
- * @Date: 2021/11/15 11:07 下午
+ * @Date: 2021/7/18 11:41 上午
  */
-class NullRequestStrategy(callback: StrategyCallback<Any>?) : AbstractRequestStrategy<Any, Any>(
-    callback!!
-) {
-    override suspend fun onLoadMethod(o: Any): Any? {
-        return null
-    }
-
-    override fun request(o: Any) {}
+abstract class AbstractRemoteRequestStrategy<RequestCard, ResponseModel>(
+    coroutineScope: CoroutineScope,
+    callback: StrategyCallback<ResponseModel>?
+) : AbstractRequestStrategy<RequestCard, ResponseModel>(coroutineScope, callback) {
+    /**
+     * 请求类型 - 网络请求
+     */
     override fun onRequestType(): Int {
-        return 0
+        return StrategyConfig.REQUEST.TYPE_REMOTE_REQUEST
     }
-
-    override fun onCancel() {}
-    override fun onDestroy() {}
 }

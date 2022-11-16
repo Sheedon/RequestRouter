@@ -13,26 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter.strategy
+package org.sheedon.rrouter.coroutine
 
 import kotlinx.coroutines.CoroutineScope
 import org.sheedon.rrouter.core.StrategyCallback
 
 /**
- * 默认本地请求策略
+ * 默认空请求策略
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
- * @Date: 2021/7/18 11:36 上午
+ * @Date: 2021/11/15 11:07 下午
  */
-abstract class AbstractLocalRequestStrategy<RequestCard, ResponseModel>(
+class NullRequestStrategy(
     coroutineScope: CoroutineScope,
-    callback: StrategyCallback<ResponseModel>?
-) : BaseRequestStrategy<RequestCard, ResponseModel>(coroutineScope, callback) {
-    /**
-     * 请求类型 - 本地请求
-     */
-    override fun onRequestType(): Int {
-        return StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST
+    callback: StrategyCallback<Any>?
+) : AbstractRequestStrategy<Any, Any>(coroutineScope, callback) {
+    override suspend fun onLoadMethod(o: Any): Any? {
+        return null
     }
+
+    override fun request(o: Any) {}
+    override fun onRequestType(): Int {
+        return 0
+    }
+
+    override fun onCancel() {}
+    override fun onDestroy() {}
 }

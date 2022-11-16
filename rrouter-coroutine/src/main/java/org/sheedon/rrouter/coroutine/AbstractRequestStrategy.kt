@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter.strategy
+package org.sheedon.rrouter.coroutine
 
-import kotlinx.coroutines.*
-import org.sheedon.rrouter.core.Converter
-import org.sheedon.rrouter.core.IRspModel
-import org.sheedon.rrouter.core.RRouter
-import org.sheedon.rrouter.core.StrategyCallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import org.sheedon.rrouter.core.*
 
 /**
- * 基础请求策略
+ * 抽象请求策略支持
  *
  * @Author: sheedon
  * @Email: sheedonsun@163.com
- * @Date: 2021/7/18 11:33 上午
+ * @Date: 2021/11/15 10:37 下午
  */
-abstract class BaseRequestStrategy<RequestCard, ResponseModel>(
+abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
     private val coroutineScope: CoroutineScope,
-    callback: StrategyCallback<ResponseModel>?
-) : AbstractRequestStrategy<RequestCard, ResponseModel>(callback) {
+    protected var callback: StrategyCallback<ResponseModel>?
+) : Request<RequestCard> {
+
     private var disposable: Job? = null
     private var factory: Converter<Any, IRspModel<*>>?
     private var errorMessage: String
@@ -53,7 +54,7 @@ abstract class BaseRequestStrategy<RequestCard, ResponseModel>(
             job.cancel()
         }
 
-        val launch = coroutineScope.async(Dispatchers.IO) {
+        disposable = coroutineScope.async(Dispatchers.IO) {
             try {
                 val rspModel = onLoadMethod(requestCard)
 
@@ -78,9 +79,14 @@ abstract class BaseRequestStrategy<RequestCard, ResponseModel>(
     }
 
     /**
+     * 加载API 方法
+     */
+    protected abstract suspend fun onLoadMethod(requestCard: RequestCard): ResponseModel?
+
+    /**
      * 成功返回结果
      */
-    protected fun onSuccessComplete() {}
+    protected open fun onSuccessComplete() {}
 
     /**
      * 取消

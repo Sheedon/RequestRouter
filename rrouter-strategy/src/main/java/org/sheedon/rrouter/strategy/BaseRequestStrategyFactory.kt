@@ -67,7 +67,7 @@ open class BaseRequestStrategyFactory<RequestCard, ResponseModel> :
      * @param callback 反馈监听器
      * @return Request<RequestCard></RequestCard>, ResponseModel>
      */
-    protected fun onCreateRealLocalRequestStrategy(
+    protected open fun onCreateRealLocalRequestStrategy(
         callback: StrategyCallback<ResponseModel>?
     ): Request<RequestCard>? {
         return null
@@ -79,7 +79,7 @@ open class BaseRequestStrategyFactory<RequestCard, ResponseModel> :
      * @param callback 反馈监听器
      * @return Request<RequestCard></RequestCard>, ResponseModel>
      */
-    protected fun onCreateRealRemoteRequestStrategy(
+    protected open fun onCreateRealRemoteRequestStrategy(
         callback: StrategyCallback<ResponseModel>?
     ): Request<RequestCard>? {
         return null
@@ -118,7 +118,7 @@ open class BaseRequestStrategyFactory<RequestCard, ResponseModel> :
      *
      * @param key 请求策略key
      */
-    protected fun destroyByKey(key: Int) {
+    protected open fun destroyByKey(key: Int) {
         val request: Request<RequestCard>? = requestStrategies!![key]
         if (request != null) {
             request.onDestroy()
