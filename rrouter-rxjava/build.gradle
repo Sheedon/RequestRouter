@@ -1,0 +1,16 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+apply from: rootProject.file("gradle/android_library_config.gradle")
+
+dependencies {
+
+    implementation deps.androidx.core
+    implementation deps.kotlin.core
+    implementation deps.kotlin.stdlib8
+    implementation deps.rxjava.rxandroid
+    implementation deps.rxjava.rxjava
+
+    api project(":rrouter-core")
+}

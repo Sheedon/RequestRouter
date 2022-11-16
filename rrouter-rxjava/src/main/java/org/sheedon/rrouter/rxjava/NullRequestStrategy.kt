@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sheedon.rrouter.strategy.support;
+package org.sheedon.rrouter.rxjava
 
-import org.sheedon.rrouter.core.support.StrategyCallback;
-
-import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observable
+import org.sheedon.rrouter.core.StrategyCallback
 
 /**
  * 默认空请求策略
@@ -26,34 +25,18 @@ import io.reactivex.rxjava3.core.Observable;
  * @Email: sheedonsun@163.com
  * @Date: 2021/11/15 11:07 下午
  */
-public class NullRequestStrategy extends AbstractRequestStrategy<Object, Object> {
-    public NullRequestStrategy(StrategyCallback<Object> callback) {
-        super(callback);
+class NullRequestStrategy(
+    callback: StrategyCallback<Any>?
+) : AbstractRequestStrategy<Any, Any>(callback) {
+    override fun onLoadMethod(requestCard: Any): Observable<Any> {
+        return Observable.just(requestCard)
     }
 
-    @Override
-    protected Observable<Object> onLoadMethod(Object o) {
-        return null;
+    override fun request(requestCard: Any) {}
+    override fun onRequestType(): Int {
+        return 0
     }
 
-
-    @Override
-    public void request(Object o) {
-
-    }
-
-    @Override
-    public int onRequestType() {
-        return 0;
-    }
-
-    @Override
-    public void onCancel() {
-
-    }
-
-    @Override
-    public void onDestroy() {
-
-    }
+    override fun onCancel() {}
+    override fun onDestroy() {}
 }
