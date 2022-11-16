@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 import org.sheedon.requestrepository.request.login.LoginRequest
 import org.sheedon.requestrepository.RspModel
 import org.sheedon.requestrepository.data.model.LoginModel
+import org.sheedon.requestrepository.request.login.LoginRouter
 import org.sheedon.rrouter.core.DataSource
+
+import androidx.lifecycle.viewModelScope
 
 /**
  * 基础模式下使用请求策略
@@ -23,6 +26,7 @@ class MainViewModel : ViewModel() {
     @JvmField
     var password: String? = null
     private var loginRequest: LoginRequest? = null
+    private var loginRouter: LoginRouter? = null
 
     /**
      * 登陆动作
@@ -34,7 +38,8 @@ class MainViewModel : ViewModel() {
             Log.v(TAG, "账号密码不能为空!")
             return
         }
-        val request = getLoginRequest()
+//        val request = getLoginRequest()
+        val request = getLoginRouter()
         request.login(account, password)
     }
 
@@ -54,6 +59,21 @@ class MainViewModel : ViewModel() {
             })
         }
         return loginRequest!!
+    }
+
+    private fun getLoginRouter(): LoginRouter {
+        if (loginRouter == null) {
+            loginRouter = LoginRouter(object : DataSource.Callback<RspModel<LoginModel>> {
+                override fun onDataNotAvailable(message: String?) {
+                    Log.v(TAG, message!!)
+                }
+
+                override fun onDataLoaded(t: RspModel<LoginModel>?) {
+                    Log.v(TAG, "user: " + t?.getData()?.accessToken)
+                }
+            },viewModelScope)
+        }
+        return loginRouter!!
     }
 
     override fun onCleared() {
