@@ -41,3 +41,4 @@ android {
         enabled true
     }
 }
+apply from: '../script/gradle-push-local.gradle'

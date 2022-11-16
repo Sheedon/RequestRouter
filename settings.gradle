@@ -1,8 +1,8 @@
 rootProject.name = "RequestRouter"
 include ':app'
+//include ':rrouter-annotation'
+//include ':rrouter-compiler'
 include ':rrouter-core'
 include ':rrouter-strategy'
-include ':rrouter-annotation'
-include ':rrouter-strategy-support'
-include ':rrouter-core-support'
-include ':rrouter-compiler'
+include ':rrouter-coroutine'
+include ':rrouter-rxjava'
