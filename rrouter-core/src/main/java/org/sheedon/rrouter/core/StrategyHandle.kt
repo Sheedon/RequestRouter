@@ -45,7 +45,7 @@ interface StrategyHandle {
     fun <RequestCard> handleRequestStrategy(
         processChain: ProcessChain,
         requestStrategies: SparseArray<Request<RequestCard>>,
-        card: RequestCard
+        card: RequestCard?
     ): Boolean
 
     /**
@@ -106,7 +106,7 @@ interface StrategyHandle {
         fun <RequestCard> handleRequestStrategy(
             requestStrategyType: Int, processChain: ProcessChain,
             requestStrategies: SparseArray<Request<RequestCard>>,
-            card: RequestCard
+            card: RequestCard?
         ): Boolean
 
         // 执行反馈处理策略

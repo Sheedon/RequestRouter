@@ -36,24 +36,26 @@ open class BaseRequestStrategyFactory<RequestCard, ResponseModel> :
     override fun createRequestStrategies(
         callback: StrategyCallback<ResponseModel>
     ): SparseArray<Request<RequestCard>> {
-        if (requestStrategies == null) {
-            requestStrategies = SparseArray<Request<RequestCard>>()
-            requestStrategies!!.put(
+        var strategies = requestStrategies
+        if (strategies == null) {
+            strategies = SparseArray<Request<RequestCard>>()
+            strategies.put(
                 StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST,
                 onCreateRealLocalRequestStrategy(callback)
             )
-            requestStrategies!!.put(
+            strategies.put(
                 StrategyConfig.REQUEST.TYPE_REMOTE_REQUEST,
                 onCreateRealRemoteRequestStrategy(callback)
             )
+            requestStrategies = strategies
         }
-        return requestStrategies!!
+        return strategies
     }
 
     /**
      * 加载请求策略类型
      * 由实际创建的请求策略提供策略类型
-     * 例如 [org.sheedon.repository.DefaultStrategyHandler.STRATEGY]
+     * 例如 [StrategyConfig.STRATEGY.TYPE_ONLY_REMOTE]
      *
      * @return 策略类型
      */

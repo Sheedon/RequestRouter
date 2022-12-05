@@ -108,7 +108,7 @@ abstract class AbstractRequestProxy<RequestCard, ResponseModel>(
         val requestCard = onCreateRequestCard()
         if (requestCard is DataCloneable) {
             try {
-                this.requestCard = (requestCard as DataCloneable).clone() as RequestCard
+                this.requestCard = (requestCard as DataCloneable).clone() as RequestCard?
             } catch (e: CloneNotSupportedException) {
                 this.requestCard = requestCard
             }
@@ -127,7 +127,7 @@ abstract class AbstractRequestProxy<RequestCard, ResponseModel>(
         // 获取当前状态
         val isSuccess = handler.handleRequestStrategy(
             strategyType, chain!!,
-            requestStrategies!!, requestCard!!
+            requestStrategies!!, requestCard
         )
         if (!isSuccess) {
             strategyCallback.onDataNotAvailable("request failure")

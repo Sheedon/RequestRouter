@@ -54,7 +54,7 @@ class MainViewModel : ViewModel() {
                 }
 
                 override fun onDataLoaded(t: RspModel<LoginModel>?) {
-                    Log.v(TAG, "user: " + t?.getData()?.accessToken)
+                    Log.v(TAG, "user: " + t?.loadData()?.accessToken)
                 }
             })
         }
@@ -69,7 +69,7 @@ class MainViewModel : ViewModel() {
                 }
 
                 override fun onDataLoaded(t: RspModel<LoginModel>?) {
-                    Log.v(TAG, "user: " + t?.getData()?.accessToken)
+                    Log.v(TAG, "user: " + t?.loadData()?.accessToken)
                 }
             },viewModelScope)
         }

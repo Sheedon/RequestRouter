@@ -27,7 +27,7 @@ package org.sheedon.rrouter.core
  */
 interface Request<RequestCard> {
     // 请求数据
-    fun request(requestCard: RequestCard)
+    fun request(requestCard: RequestCard?)
 
     // 请求类型
     // 例如：网络请求，本地请求

@@ -29,7 +29,7 @@ import org.sheedon.rrouter.core.*
  * @Date: 2021/11/15 10:37 下午
  */
 abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
-    private val coroutineScope: CoroutineScope,
+    protected val coroutineScope: CoroutineScope,
     protected var callback: StrategyCallback<ResponseModel>?
 ) : Request<RequestCard> {
 
@@ -48,7 +48,7 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
      *
      * @param requestCard 请求卡片
      */
-    override fun request(requestCard: RequestCard) {
+    override fun request(requestCard: RequestCard?) {
         val job = disposable
         if (job != null && !job.isCompleted) {
             job.cancel()
@@ -64,11 +64,11 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
                     return@async
                 }
                 val iRspModel: IRspModel<*> = factory!!.convert(rspModel)
-                if (iRspModel.isSuccess()) {
+                if (iRspModel.checkSuccess()) {
                     callback?.onDataLoaded(rspModel)
                     return@async
                 }
-                val message = iRspModel.getMessage()
+                val message = iRspModel.loadMessage()
                 callback?.onDataNotAvailable(message)
                 onSuccessComplete()
             } catch (e: Exception) {
@@ -81,7 +81,7 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
     /**
      * 加载API 方法
      */
-    protected abstract suspend fun onLoadMethod(requestCard: RequestCard): ResponseModel
+    protected abstract suspend fun onLoadMethod(requestCard: RequestCard?): ResponseModel?
 
     /**
      * 成功返回结果

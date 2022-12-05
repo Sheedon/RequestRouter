@@ -51,7 +51,7 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
     @Suppress("UPPER_BOUND_VIOLATED_BASED_ON_JAVA_ANNOTATIONS",
         "UPPER_BOUND_VIOLATED_BASED_ON_JAVA_ANNOTATIONS"
     )
-    override fun request(requestCard: RequestCard) {
+    override fun request(requestCard: RequestCard?) {
         val job = disposable
         if (job != null && !job.isDisposed) {
             job.dispose()
@@ -66,10 +66,10 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
 
                     val iRspModel: IRspModel<*> = factory!!.convert(rspModel)
 
-                    if (iRspModel.isSuccess()) {
+                    if (iRspModel.checkSuccess()) {
                         callback?.onDataLoaded(rspModel)
                     }else{
-                        val message = iRspModel.getMessage()
+                        val message = iRspModel.loadMessage()
                         callback?.onDataNotAvailable(message)
                     }
                     onSuccessComplete()
@@ -84,7 +84,7 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
      * 加载API 方法
      */
     @Suppress("UPPER_BOUND_VIOLATED_BASED_ON_JAVA_ANNOTATIONS")
-    protected abstract fun onLoadMethod(requestCard: RequestCard): Observable<ResponseModel>
+    protected abstract fun onLoadMethod(requestCard: RequestCard?): Observable<ResponseModel>
 
     /**
      * 成功返回结果

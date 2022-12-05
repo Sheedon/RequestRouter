@@ -50,7 +50,7 @@ class NotDataToLocationStrategyHandler : BaseStrategyHandler() {
     override fun <RequestCard> handleRealRequestStrategy(
         processChain: ProcessChain,
         requestStrategies: SparseArray<Request<RequestCard>>,
-        card: RequestCard
+        card: RequestCard?
     ): Boolean {
         return super.handleRealRequestStrategy(processChain, requestStrategies, card)
     }

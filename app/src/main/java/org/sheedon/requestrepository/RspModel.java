@@ -16,22 +16,22 @@ public class RspModel<T> implements IRspModel<T> {
     private T data;
 
 
-    public String getCode() {
+    public String loadCode() {
         return code;
     }
 
     @Override
-    public T getData() {
+    public T loadData() {
         return data;
     }
 
     @Override
-    public boolean isSuccess() {
+    public boolean checkSuccess() {
         return code != null && code.equals("0000");
     }
 
     @Override
-    public String getMessage() {
+    public String loadMessage() {
         return message;
     }
 

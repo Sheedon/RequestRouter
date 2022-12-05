@@ -29,11 +29,11 @@ class NullRequestStrategy(
     coroutineScope: CoroutineScope,
     callback: StrategyCallback<Any>?
 ) : AbstractRequestStrategy<Any, Any>(coroutineScope, callback) {
-    override suspend fun onLoadMethod(requestCard: Any): Any {
-        return requestCard
+    override suspend fun onLoadMethod(requestCard: Any?): Any {
+        return requestCard ?: Any()
     }
 
-    override fun request(requestCard: Any) {}
+    override fun request(requestCard: Any?) {}
     override fun onRequestType(): Int {
         return 0
     }

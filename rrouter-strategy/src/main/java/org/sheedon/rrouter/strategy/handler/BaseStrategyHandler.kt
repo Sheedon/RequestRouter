@@ -40,7 +40,7 @@ abstract class BaseStrategyHandler : StrategyHandle {
     override fun <RequestCard> handleRequestStrategy(
         processChain: ProcessChain,
         requestStrategies: SparseArray<Request<RequestCard>>,
-        card: RequestCard
+        card: RequestCard?
     ): Boolean {
         return handleRealRequestStrategy(processChain, requestStrategies, card)
     }
@@ -57,7 +57,7 @@ abstract class BaseStrategyHandler : StrategyHandle {
     protected open fun <RequestCard> handleRealRequestStrategy(
         processChain: ProcessChain,
         requestStrategies: SparseArray<Request<RequestCard>>,
-        card: RequestCard
+        card: RequestCard?
     ): Boolean {
         // 拿到当前进度对应的请求
         val request = requestStrategies[processChain.getProcess()]

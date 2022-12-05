@@ -28,11 +28,11 @@ import org.sheedon.rrouter.core.StrategyCallback
 class NullRequestStrategy(
     callback: StrategyCallback<Any>?
 ) : AbstractRequestStrategy<Any, Any>(callback) {
-    override fun onLoadMethod(requestCard: Any): Observable<Any> {
-        return Observable.just(requestCard)
+    override fun onLoadMethod(requestCard: Any?): Observable<Any> {
+        return Observable.just(requestCard?:Any())
     }
 
-    override fun request(requestCard: Any) {}
+    override fun request(requestCard: Any?) {}
     override fun onRequestType(): Int {
         return 0
     }

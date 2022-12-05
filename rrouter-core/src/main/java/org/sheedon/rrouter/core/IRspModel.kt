@@ -22,9 +22,9 @@ package org.sheedon.rrouter.core
  * @Email: sheedonsun@163.com
  * @Date: 2021/11/3 12:18 上午
  */
-interface IRspModel<T> {
-    fun getCode(): Any
-    fun getData(): T
-    fun isSuccess(): Boolean
-    fun getMessage(): String?
+interface IRspModel<out T> {
+    fun loadCode(): Any
+    fun loadData(): T
+    fun checkSuccess(): Boolean
+    fun loadMessage(): String?
 }

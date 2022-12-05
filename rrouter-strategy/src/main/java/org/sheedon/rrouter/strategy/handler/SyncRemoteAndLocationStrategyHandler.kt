@@ -54,7 +54,7 @@ class SyncRemoteAndLocationStrategyHandler : BaseStrategyHandler() {
     override fun <RequestCard> handleRealRequestStrategy(
         processChain: ProcessChain,
         requestStrategies: SparseArray<Request<RequestCard>>,
-        card: RequestCard
+        card: RequestCard?
     ): Boolean {
         // 拿到当前进度对应的请求
         val localRequest = requestStrategies[StrategyConfig.REQUEST.TYPE_LOCAL_REQUEST]
@@ -89,7 +89,7 @@ class SyncRemoteAndLocationStrategyHandler : BaseStrategyHandler() {
     private fun <RequestCard> request(
         request: Request<RequestCard>?,
         processChain: ProcessChain, index: Int,
-        requestCard: RequestCard
+        requestCard: RequestCard?
     ) {
         if (request != null && processChain.getStatus(index) == ProcessChain.STATUS_NORMAL) {
             // 请求任务

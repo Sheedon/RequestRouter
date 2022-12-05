@@ -54,7 +54,7 @@ internal class DefaultStrategyHandler private constructor() :
         requestStrategyType: Int,
         processChain: ProcessChain,
         requestStrategies: SparseArray<Request<RequestCard>>,
-        card: RequestCard
+        card: RequestCard?
     ): Boolean {
         val handler = handlerFactory?.loadStrategyHandler(requestStrategyType)
         if (handler == null) {
