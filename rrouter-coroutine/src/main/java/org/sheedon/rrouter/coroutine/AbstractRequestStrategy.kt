@@ -72,7 +72,11 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
                 callback?.onDataNotAvailable(message)
                 onSuccessComplete()
             } catch (e: Exception) {
-                callback?.onDataNotAvailable(e.message)
+                if (e.message?.contains(CODE_CANCEL) == true) {
+                    callback?.onDataNotAvailable("")
+                } else {
+                    callback?.onDataNotAvailable(e.message)
+                }
             }
 
         }
@@ -109,5 +113,10 @@ abstract class AbstractRequestStrategy<RequestCard, ResponseModel>(
             job.cancel()
         }
         disposable = null
+    }
+
+    companion object {
+        // 取消code
+        const val CODE_CANCEL = " 600 "
     }
 }
